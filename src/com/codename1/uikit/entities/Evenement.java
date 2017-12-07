@@ -81,6 +81,13 @@ public class Evenement implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public Evenement(String nom, String description) {
+        this.nom = nom;
+        this.description = description;
+    }
+
+    
+    
     public Integer getIdEvenement() {
         return idEvenement;
     }

@@ -95,8 +95,8 @@ public class BaseForm extends Form {
                 new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                BlankPage blankPage=new BlankPage(res);
-                blankPage.show();
+                EventPage eventpage = new EventPage(res);
+                eventpage.show();
             }
         });
 
