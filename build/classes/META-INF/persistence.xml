@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="DemoPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.codename1.uikit.entities.Topic1</class>
+    <class>com.codename1.uikit.entities.DemandePub</class>
+    <class>com.codename1.uikit.entities.Commentaire</class>
+    <class>com.codename1.uikit.entities.Parking</class>
+    <class>com.codename1.uikit.entities.Evenement</class>
+    <class>com.codename1.uikit.entities.JardinEnfant</class>
+    <class>com.codename1.uikit.entities.Review11</class>
+    <class>com.codename1.uikit.entities.PanierProduit</class>
+    <class>com.codename1.uikit.entities.ScheduledCommand</class>
+    <class>com.codename1.uikit.entities.DemandeEmploi</class>
+    <class>com.codename1.uikit.entities.Produit</class>
+    <class>com.codename1.uikit.entities.Winner</class>
+    <class>com.codename1.uikit.entities.Promotion</class>
+    <class>com.codename1.uikit.entities.CarteFidelite</class>
+    <class>com.codename1.uikit.entities.User</class>
+    <class>com.codename1.uikit.entities.Publicite</class>
+    <class>com.codename1.uikit.entities.Panier</class>
+    <class>com.codename1.uikit.entities.Reclamation</class>
+    <class>com.codename1.uikit.entities.Boutique</class>
+    <class>com.codename1.uikit.entities.OffreEmploi</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/tunisiamallv8?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+    </properties>
+  </persistence-unit>
+</persistence>

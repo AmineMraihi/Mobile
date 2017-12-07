@@ -26,6 +26,8 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.layouts.Layout;
@@ -80,16 +82,40 @@ public class BaseForm extends Form {
                         new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
         ));
 
-        tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-        tb.addMaterialCommandToSideMenu("Produit", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-        tb.addMaterialCommandToSideMenu("Boutique", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-        tb.addMaterialCommandToSideMenu("Evenement", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-        tb.addMaterialCommandToSideMenu("Offre d'emploi", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-        tb.addMaterialCommandToSideMenu("Parking", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-        tb.addMaterialCommandToSideMenu("Jardin d'enfant", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
-        tb.addMaterialCommandToSideMenu("Reclamation", FontImage.MATERIAL_UPDATE, e -> new NewsfeedForm(res).show());
+        tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE,
+                e -> new NewsfeedForm(res).show());
 
-        tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new ProfileForm(res).show());
-        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new SignInForm(res).show());
+        tb.addMaterialCommandToSideMenu("Produit", FontImage.MATERIAL_UPDATE,
+                e -> new NewsfeedForm(res).show());
+
+        tb.addMaterialCommandToSideMenu("Boutique", FontImage.MATERIAL_UPDATE,
+                e -> new NewsfeedForm(res).show());
+
+        tb.addMaterialCommandToSideMenu("Evenement", FontImage.MATERIAL_UPDATE,
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                BlankPage blankPage=new BlankPage(res);
+                blankPage.show();
+            }
+        });
+
+        tb.addMaterialCommandToSideMenu("Offre d'emploi", FontImage.MATERIAL_UPDATE,
+                e -> new NewsfeedForm(res).show());
+
+        tb.addMaterialCommandToSideMenu("Parking", FontImage.MATERIAL_UPDATE,
+                e -> new NewsfeedForm(res).show());
+
+        tb.addMaterialCommandToSideMenu("Jardin d'enfant", FontImage.MATERIAL_UPDATE,
+                e -> new NewsfeedForm(res).show());
+
+        tb.addMaterialCommandToSideMenu("Reclamation", FontImage.MATERIAL_UPDATE,
+                e -> new NewsfeedForm(res).show());
+
+        tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS,
+                e -> new ProfileForm(res).show());
+
+        tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP,
+                e -> new SignInForm(res).show());
     }
 }
