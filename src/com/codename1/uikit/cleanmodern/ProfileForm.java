@@ -16,17 +16,22 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
-
 package com.codename1.uikit.cleanmodern;
 
 import com.codename1.components.ScaleImageLabel;
+import com.codename1.io.ConnectionRequest;
+import com.codename1.tunisiamall.service.UserService;
+import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
@@ -42,6 +47,8 @@ import com.codename1.ui.util.Resources;
  */
 public class ProfileForm extends BaseForm {
 
+    private ConnectionRequest connectionRequest;
+
     public ProfileForm(Resources res) {
         super("Newsfeed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
@@ -49,14 +56,14 @@ public class ProfileForm extends BaseForm {
         getTitleArea().setUIID("Container");
         setTitle("Profile");
         getContentPane().setScrollVisible(false);
-        
+
         super.addSideMenu(res);
-        
-        tb.addSearchCommand(e -> {});
-        
-        
+
+        tb.addSearchCommand(e -> {
+        });
+
         Image img = res.getImage("profile-background.jpg");
-        if(img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
+        if (img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
         }
         ScaleImageLabel sl = new ScaleImageLabel(img);
@@ -67,42 +74,70 @@ public class ProfileForm extends BaseForm {
         Label twitter = new Label("486 followers", res.getImage("twitter-logo.png"), "BottomPad");
         facebook.setTextPosition(BOTTOM);
         twitter.setTextPosition(BOTTOM);
-        
+
         add(LayeredLayout.encloseIn(
                 sl,
                 BorderLayout.south(
-                    GridLayout.encloseIn(3, 
-                            facebook,
-                            FlowLayout.encloseCenter(
-                                new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond")),
-                            twitter
-                    )
+                        GridLayout.encloseIn(3,
+                                facebook,
+                                FlowLayout.encloseCenter(
+                                        new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond")),
+                                twitter
+                        )
                 )
         ));
 
-        TextField username = new TextField("sandeep");
+        TextField username = new TextField(SignInForm.staticUser.getUsername(), "Username", 20, TextField.ANY);
         username.setUIID("TextFieldBlack");
         addStringValue("Username", username);
 
-        TextField email = new TextField("sandeep@gmail.com", "E-Mail", 20, TextField.EMAILADDR);
+        TextField nom = new TextField(SignInForm.staticUser.getNom(), "nom", 20, TextField.ANY);
+        nom.setUIID("TextFieldBlack");
+        addStringValue("nom", nom);
+
+        TextField prenom = new TextField(SignInForm.staticUser.getPrenom(), "prenom", 20, TextField.ANY);
+        prenom.setUIID("TextFieldBlack");
+        addStringValue("prenom", prenom);
+
+        TextField email = new TextField(SignInForm.staticUser.getEmail(), "E-Mail", 20, TextField.EMAILADDR);
         email.setUIID("TextFieldBlack");
         addStringValue("E-Mail", email);
-        
-        TextField password = new TextField("sandeep", "Password", 20, TextField.PASSWORD);
+
+        TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
         password.setUIID("TextFieldBlack");
         addStringValue("Password", password);
 
-        CheckBox cb1 = CheckBox.createToggle(res.getImage("on-off-off.png"));
-        cb1.setUIID("Label");
-        cb1.setPressedIcon(res.getImage("on-off-on.png"));
-        CheckBox cb2 = CheckBox.createToggle(res.getImage("on-off-off.png"));
-        cb2.setUIID("Label");
-        cb2.setPressedIcon(res.getImage("on-off-on.png"));
-        
-        addStringValue("Facebook", FlowLayout.encloseRightMiddle(cb1));
-        addStringValue("Twitter", FlowLayout.encloseRightMiddle(cb2));
+        Button save = new Button("save");
+
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                MD5 md5 = new MD5(password.getText());
+                String md5Password = md5.asHex();
+                connectionRequest = new ConnectionRequest() {
+                    @Override
+                    protected void postResponse() {
+                        Dialog.show("Succes", "modification avec succes", "ok", null);
+
+                    }
+                };
+
+                UserService userService = new UserService();
+                userService.updateuser(SignInForm.staticUser.getIdUser(),
+                        username.getText(),
+                        nom.getText(),
+                        prenom.getText(),
+                        md5Password,
+                        email.getText());
+
+            }
+
+        });
+
+        add(save);
+
     }
-    
+
     private void addStringValue(String s, Component v) {
         add(BorderLayout.west(new Label(s, "PaddedLabel")).
                 add(BorderLayout.CENTER, v));

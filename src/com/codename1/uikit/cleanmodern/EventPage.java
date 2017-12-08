@@ -119,37 +119,10 @@ public class EventPage extends BaseForm {
 
         System.out.println(getAllEvents().size());
 
-//        Container list = new InfiniteContainer() {
-//            @Override
-//            public Component[] fetchComponents(int index, int amount) {
-//                amount=getAllEvents().size();
-//                Component[] more = new Component[amount];
-//                for (int inter = 0; inter < amount; inter++) {
-//                    int offset = index + inter;
-//                    MultiButton mb = new MultiButton("list entry " + offset);
-//                    mb.setTextLine2(("further details..."));
-//                    FontImage.setMaterialIcon(mb, FontImage.MATERIAL_PERSON);
-//                    mb.addActionListener(new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent evt) {
-////                            ToastBar.showMessage("clicked: " + offset, FontImage.MATERIAL_PERSON, offset);
-//                            if (Dialog.show("" + offset, null, "ok", "cancel")) {
-//                                Display.getInstance().exitApplication();
-//                            }
-//                        }
-//                    });
-//                    more[inter] = mb;
-//
-//                }
-//                return more;
-//            }
-//        };
-//        add(list);
         Container list = new Container(BoxLayout.y());
         list.setScrollableY(true);
         for (Evenement e :getAllEvents() ) {
             MultiButton mb = new MultiButton(e.getNom());
-//            mb.setTextLine2(e.get);
             list.add(mb);
         }
         add(list);
@@ -255,7 +228,6 @@ public class EventPage extends BaseForm {
                         (String) obj.get("description")));
             }
 
-//            return response;
 
         } catch (IOException ex) {
             System.out.println("EXCEPTION : " + ex);

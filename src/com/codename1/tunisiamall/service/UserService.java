@@ -59,4 +59,26 @@ public class UserService {
 //
 //        }
 //    }
+    public void updateuser(int id_user, String username, String nom, String prenom,
+            String password, String mail) {
+       
+        connectionRequest = new ConnectionRequest() {
+            @Override
+            protected void postResponse() {
+                Dialog.show("Succes", "modification avec succes", "ok", null);
+
+            }
+        };
+
+        connectionRequest.setUrl("http://localhost/crud/UpdateProfile.php?"
+                + "username=" + username
+                + "&name=" + nom
+                + "&prenom=" + prenom
+                + "&password=" + password
+                + "&mail=" + mail
+                + "&id_user=" + id_user
+        );
+        NetworkManager.getInstance().addToQueue(connectionRequest);
+
+    }
 }

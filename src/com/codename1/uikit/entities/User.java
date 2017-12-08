@@ -150,7 +150,7 @@ public class User implements Serializable {
         this.prenom = prenom;
         this.sexe = sexe;
     }
-    
+
     public User(String username, String email, boolean enabled, String password, String roles, String nom, String prenom, String sexe) {
         this.username = username;
         this.email = email;
@@ -162,11 +162,14 @@ public class User implements Serializable {
         this.sexe = sexe;
     }
 
-    public User(Integer idUser, String username, String password, String email) {
+    public User(Integer idUser, String username, String password, String email, String nom, String prenom) {
         this.idUser = idUser;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.nom = nom;
+        this.prenom = prenom;
+
     }
 
     public Integer getIdUser() {
@@ -417,5 +420,5 @@ public class User implements Serializable {
     public String toString() {
         return "com.codename1.uikit.entities.User[ idUser=" + idUser + " ]";
     }
-    
+
 }

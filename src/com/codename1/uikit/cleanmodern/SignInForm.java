@@ -54,6 +54,7 @@ public class SignInForm extends BaseForm {
     List<User> u = new ArrayList<>();
     boolean test = false;
     Container ctn;
+    public static User staticUser;
 
     public SignInForm(Resources res) {
         super(new BorderLayout());
@@ -70,13 +71,10 @@ public class SignInForm extends BaseForm {
 
         TextField username = new TextField("", "Username", 20, TextField.ANY);
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
-//        username.setSingleLineTextArea(false);
-//        password.setSingleLineTextArea(false);
+
         Button signIn = new Button("Sign In");
         Button signUp = new Button("sign up");
 
-//        Button signUp = new Button("Sign Up");
-//        signUp.addActionListener(e -> new SignUpForm(res).show());
         signUp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -105,15 +103,28 @@ public class SignInForm extends BaseForm {
                         List<Map<String, Object>> content = (List<Map<String, Object>>) data.get("root");
 
                         for (Map<String, Object> obj : content) {
-                            u.add(new User(Integer.parseInt(obj.get("id_user").toString()),
-                                    (String) obj.get("username"), (String) obj.get("password"),
-                                    (String) obj.get("email")));
+                            u.add(new User(
+                                    Integer.parseInt(obj.get("id_user").toString()),
+                                    (String) obj.get("username"),
+                                    (String) obj.get("password"),
+                                    (String) obj.get("email"),
+                                    (String) obj.get("nom"),
+                                    (String) obj.get("prenom")
+                            ));
                         }
 
                         for (User user : u) {
                             if (username.getText().equals(user.getUsername())
                                     && md5Password.equals(user.getPassword())) {
                                 System.out.println("it works!");
+                                staticUser = new User();
+                                staticUser.setIdUser(user.getIdUser());
+                                staticUser.setUsername(user.getUsername());
+                                staticUser.setNom(user.getNom());
+                                staticUser.setPrenom(user.getPrenom());
+                                staticUser.setEmail(user.getEmail());
+                                staticUser.setPassword(user.getPassword());
+
                                 test = true;
                                 NewsfeedForm w = new NewsfeedForm(res);
                                 w.show();
