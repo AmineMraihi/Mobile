@@ -5,8 +5,10 @@
  */
 package com.codename1.uikit.cleanmodern;
 
+import com.codename1.components.ImageViewer;
 import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
+import com.codename1.components.ShareButton;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.io.ConnectionRequest;
@@ -14,6 +16,7 @@ import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkManager;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
+import static com.codename1.ui.CN.callSerially;
 import com.codename1.ui.Component;
 import static com.codename1.ui.Component.BOTTOM;
 import static com.codename1.ui.Component.CENTER;
@@ -22,23 +25,30 @@ import static com.codename1.ui.Component.RIGHT;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
+import com.codename1.ui.EncodedImage;
+import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.InfiniteContainer;
 import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
+import com.codename1.ui.Slider;
+import com.codename1.ui.SwipeableContainer;
 import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.URLImage;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.layouts.Layout;
+import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.entities.Evenement;
@@ -57,6 +67,17 @@ import java.util.Map;
 public class EventPage extends BaseForm {
 
     List<Evenement> listevenement = new ArrayList<>();
+    EncodedImage enc;
+    Image img;
+    ImageViewer Imgv;
+    private Image circleLineImage;
+    private Object circleMask;
+    private int circleMaskWidth;
+    private int circleMaskHeight;
+    private Font letterFont;
+    private boolean finishedLoading;
+    private long lastScroll;
+    private boolean messageShown;
 
     public EventPage(Resources res) {
         super("Newsfeed", BoxLayout.y());
@@ -121,12 +142,61 @@ public class EventPage extends BaseForm {
 
         Container list = new Container(BoxLayout.y());
         list.setScrollableY(true);
-        for (Evenement e :getAllEvents() ) {
-            MultiButton mb = new MultiButton(e.getNom());
-            list.add(mb);
+        for (Evenement e : getAllEvents()) {
+            String brochure = e.getPath();
+            EncodedImage img = EncodedImage.createFromImage(
+                    Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
+            );
+            URLImage imgg = URLImage.createToStorage(img, "http://localhost/TestUser/web/images/amine/" + brochure, "http://localhost/TestUser/web/images/amine/" + brochure);
+            imgg.fetch();
+            ImageViewer imgv = new ImageViewer(imgg);
+            int fiveMM = Display.getInstance().convertToPixels(5);
+            final Image finalDuke = imgg.scaledWidth(fiveMM);
+
+            list.add(createRankWidget(finalDuke, e.getNom(), e.getNom()));
         }
         add(list);
     }
+
+//    started here 
+    public SwipeableContainer createRankWidget(Image c, String title, String year) {
+        MultiButton button = new MultiButton(title);
+        button.setTextLine2(year);
+
+        button.setIcon(c);
+        ShareButton share = new ShareButton();
+        FontImage.setMaterialIcon(share, FontImage.MATERIAL_SHARE, 8);
+        return new SwipeableContainer(share,
+                button);
+    }
+
+    private void initStarRankStyle(Style s, Image star) {
+        s.setBackgroundType(Style.BACKGROUND_IMAGE_TILE_BOTH);
+        s.setBorder(Border.createEmpty());
+        s.setBgImage(star);
+        s.setBgTransparency(0);
+    }
+
+    private Slider createStarRankSlider() {
+        Slider starRank = new Slider();
+        starRank.setEditable(true);
+        starRank.setMinValue(0);
+        starRank.setMaxValue(10);
+        Font fnt = Font.createTrueTypeFont("native:MainLight", "native:MainLight").
+                derive(Display.getInstance().convertToPixels(5, true), Font.STYLE_PLAIN);
+        Style s = new Style(0xffff33, 0, fnt, (byte) 0);
+        Image fullStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+        s.setOpacity(100);
+        s.setFgColor(0);
+        Image emptyStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+        initStarRankStyle(starRank.getSliderEmptySelectedStyle(), emptyStar);
+        initStarRankStyle(starRank.getSliderEmptyUnselectedStyle(), emptyStar);
+        initStarRankStyle(starRank.getSliderFullSelectedStyle(), fullStar);
+        initStarRankStyle(starRank.getSliderFullUnselectedStyle(), fullStar);
+        starRank.setPreferredSize(new Dimension(fullStar.getWidth() * 5, fullStar.getHeight()));
+        return starRank;
+    }
+//            ended here
 
     private void updateArrowPosition(Button b, Label arrow) {
         arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth() / 2 - arrow.getWidth() / 2);
@@ -224,10 +294,13 @@ public class EventPage extends BaseForm {
             List<Map<String, Object>> response = (List<Map<String, Object>>) result.get("root");
 
             for (Map<String, Object> obj : response) {
-                listevenement.add(new Evenement((String) obj.get("nom"),
-                        (String) obj.get("description")));
+                listevenement.add(
+                        new Evenement(
+                                (String) obj.get("nom"),
+                                (String) obj.get("description"),
+                                (String) obj.get("path")
+                        ));
             }
-
 
         } catch (IOException ex) {
             System.out.println("EXCEPTION : " + ex);

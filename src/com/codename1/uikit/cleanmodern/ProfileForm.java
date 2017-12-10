@@ -18,14 +18,17 @@
  */
 package com.codename1.uikit.cleanmodern;
 
+import com.codename1.components.FloatingActionButton;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.io.ConnectionRequest;
+import com.codename1.io.FileSystemStorage;
 import com.codename1.tunisiamall.service.UserService;
 import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
@@ -39,6 +42,8 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * The user profile form
@@ -48,6 +53,11 @@ import com.codename1.ui.util.Resources;
 public class ProfileForm extends BaseForm {
 
     private ConnectionRequest connectionRequest;
+    String md5Password;
+
+    private String imgName = "";
+    private String imgPath = "";
+    Label profile = null;
 
     public ProfileForm(Resources res) {
         super("Newsfeed", BoxLayout.y());
@@ -86,7 +96,38 @@ public class ProfileForm extends BaseForm {
                         )
                 )
         ));
+//started here
+        profile = new Label();
+        FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_IMAGE);
+        fab.addActionListener((ActionListener) (ActionEvent evt) -> {
+            Display.getInstance().openGallery((ActionListener) (ActionEvent ev) -> {
+                if (ev != null && ev.getSource() != null) {
+                    imgPath = (String) ev.getSource();
+                    int fileNameIndex = imgPath.lastIndexOf("/") + 1;
+                    imgName = imgPath.substring(fileNameIndex);
 
+                    try {
+
+                        InputStream is = FileSystemStorage.getInstance().openInputStream(imgPath);
+                        Image im = Image.createImage(is);
+
+                        Image listingMask = res.getImage("refimg2.jpg");
+
+//                        profile.setIcon(im.fill(listingMask.getWidth(), listingMask.getHeight()));
+//                        refreshTheme();
+                        System.out.println(imgPath);
+                        System.out.println(imgName);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, Display.GALLERY_IMAGE);
+        });
+        addStringValue("picturepleasework", fab);
+
+//ended here
         TextField username = new TextField(SignInForm.staticUser.getUsername(), "Username", 20, TextField.ANY);
         username.setUIID("TextFieldBlack");
         addStringValue("Username", username);
@@ -105,15 +146,25 @@ public class ProfileForm extends BaseForm {
 
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
         password.setUIID("TextFieldBlack");
-        addStringValue("Password", password);
+        addStringValue("Password*", password);
+        Label InfoAboutPassword1 = new Label("by leaving password field empty, ");
+        add(InfoAboutPassword1);
+        Label InfoAboutPassword2 = new Label("you accept the older one");
+        add(InfoAboutPassword2);
 
         Button save = new Button("save");
 
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                MD5 md5 = new MD5(password.getText());
-                String md5Password = md5.asHex();
+
+                if (password.getText() == "") {
+                    md5Password = SignInForm.staticUser.getPassword();
+                } else {
+                    MD5 md5 = new MD5(password.getText());
+                    md5Password = md5.asHex();
+                }
+
                 connectionRequest = new ConnectionRequest() {
                     @Override
                     protected void postResponse() {
@@ -128,7 +179,10 @@ public class ProfileForm extends BaseForm {
                         nom.getText(),
                         prenom.getText(),
                         md5Password,
-                        email.getText());
+                        email.getText(),
+                        imgName,
+                        imgPath
+                );
 
             }
 

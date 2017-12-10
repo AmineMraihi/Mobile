@@ -86,6 +86,14 @@ public class Evenement implements Serializable {
         this.description = description;
     }
 
+    public Evenement(String nom, String description, String path) {
+        this.nom = nom;
+        this.description = description;
+        this.path = path;
+    }
+    
+    
+
     
     
     public Integer getIdEvenement() {

@@ -53,13 +53,6 @@ public class SignUpForm extends BaseForm {
 
     public SignUpForm(Resources res) {
         super(new BorderLayout());
-//        Toolbar tb = new Toolbar(true);
-//        setToolbar(tb);
-////        tb.setUIID("Container");
-//        getTitleArea().setUIID("Container");
-//        Form previous = Display.getInstance().getCurrent();
-//        tb.setBackCommand("", e -> previous.showBack());
-//        setUIID("SignIn");
 
         if (!Display.getInstance().isTablet()) {
             BorderLayout bl = (BorderLayout) getLayout();
@@ -71,24 +64,18 @@ public class SignUpForm extends BaseForm {
         setUIID("SignIn");
 
         username = new TextField("", "username", 20, TextField.ANY);
-//        FontImage.setMaterialIcon(username.getHintLabel(), FontImage.MATERIAL_PERSON);
 
         nom = new TextField("", "nom", 20, TextField.ANY);
-//        FontImage.setMaterialIcon(nom.getHintLabel(), FontImage.MATERIAL_PERSON);
 
         prenom = new TextField("", "prenom", 20, TextField.ANY);
-//        FontImage.setMaterialIcon(prenom.getHintLabel(), FontImage.MATERIAL_PERSON);
 
         password = new TextField("", "password", 20, TextField.ANY);
         password.setConstraint(TextField.PASSWORD);
-//        FontImage.setMaterialIcon(password.getHintLabel(), FontImage.MATERIAL_LOCK);
 
         mail = new TextField("", "e-mail", 20, TextField.ANY);
-//        FontImage.setMaterialIcon(mail.getHintLabel(), FontImage.MATERIAL_MAIL);
 
         Button next = new Button("Sign up");
         Button signIn = new Button("Sign In");
-//        signIn.addActionListener(e -> previous.showBack());
         signIn.setUIID("Link");
         Label alreadHaveAnAccount = new Label("Already have an account?");
 
@@ -119,10 +106,7 @@ public class SignUpForm extends BaseForm {
                 signInForm.show();
             }
         });
-//        add(BorderLayout.SOUTH, BoxLayout.encloseY(
-//                next,
-//                FlowLayout.encloseCenter(alreadHaveAnAccount, signIn)
-//        ));
+        
         next.requestFocus();
         next.addActionListener(new ActionListener() {
             @Override

@@ -89,7 +89,13 @@ public class BaseForm extends Form {
                 e -> new NewsfeedForm(res).show());
 
         tb.addMaterialCommandToSideMenu("Boutique", FontImage.MATERIAL_UPDATE,
-                e -> new NewsfeedForm(res).show());
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                BlankPage blankPage=new BlankPage(res);
+                blankPage.show();
+            }
+        });
 
         tb.addMaterialCommandToSideMenu("Evenement", FontImage.MATERIAL_UPDATE,
                 new ActionListener() {

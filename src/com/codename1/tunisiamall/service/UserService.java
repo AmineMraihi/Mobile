@@ -27,7 +27,8 @@ public class UserService {
 
     private ConnectionRequest connectionRequest;
 
-    public void adduser(String username, String nom, String prenom, String password, String mail) {
+    public void adduser(String username, String nom, String prenom, String password,
+            String mail) {
         connectionRequest = new ConnectionRequest() {
             @Override
             protected void postResponse() {
@@ -42,6 +43,7 @@ public class UserService {
                 + "&prenom=" + prenom
                 + "&password=" + password
                 + "&mail=" + mail
+                
         );
         NetworkManager.getInstance().addToQueue(connectionRequest);
     }
@@ -60,8 +62,8 @@ public class UserService {
 //        }
 //    }
     public void updateuser(int id_user, String username, String nom, String prenom,
-            String password, String mail) {
-       
+            String password, String mail, String imagename, String imagepath) {
+
         connectionRequest = new ConnectionRequest() {
             @Override
             protected void postResponse() {
@@ -77,6 +79,8 @@ public class UserService {
                 + "&password=" + password
                 + "&mail=" + mail
                 + "&id_user=" + id_user
+                + "&imagename=" + imagename
+                + "&imagepath=" + imagepath
         );
         NetworkManager.getInstance().addToQueue(connectionRequest);
 
