@@ -11,6 +11,8 @@ import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkManager;
 import com.codename1.uikit.entities.User;
 import com.codename1.ui.Dialog;
+import com.codename1.uikit.entities.Evenement;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,7 +30,7 @@ public class UserService {
     private ConnectionRequest connectionRequest;
 
     public void adduser(String username, String nom, String prenom, String password,
-            String mail) {
+            String mail, String imagename, String imagepath) {
         connectionRequest = new ConnectionRequest() {
             @Override
             protected void postResponse() {
@@ -43,7 +45,8 @@ public class UserService {
                 + "&prenom=" + prenom
                 + "&password=" + password
                 + "&mail=" + mail
-                
+                + "&imagename=" + imagename
+                + "&imagepath=" + imagepath
         );
         NetworkManager.getInstance().addToQueue(connectionRequest);
     }
@@ -83,6 +86,40 @@ public class UserService {
                 + "&imagepath=" + imagepath
         );
         NetworkManager.getInstance().addToQueue(connectionRequest);
+
+    }
+
+    public boolean verifyUsername(String username) {
+        List<Map<String, Object>> all = new ArrayList<>();
+        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/seletUsername.php?"
+                + "username=" + username);
+        NetworkManager.getInstance().addToQueueAndWait(request);
+        Map<String, Object> result = null;
+        boolean exist = false;
+
+        try {
+            result = new JSONParser().parseJSON(new InputStreamReader(new ByteArrayInputStream(request.getResponseData()), "UTF-8"));
+            List<Map<String, Object>> response = (List<Map<String, Object>>) result.get("root");
+
+            for (Map<String, Object> obj : response) {
+                exist = true;
+            }
+
+        } catch (IOException ex) {
+            System.out.println("EXCEPTION : " + ex);
+
+        }
+
+        return exist;
+    }
+
+    public void deleteAccount(int id) {
+        List<Map<String, Object>> all = new ArrayList<>();
+        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/deleteAcccount.php?"
+                + "id=" + id);
+        NetworkManager.getInstance().addToQueueAndWait(request);
+        Map<String, Object> result = null;
+        NetworkManager.getInstance().addToQueue(request);
 
     }
 }

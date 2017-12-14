@@ -118,6 +118,9 @@ public class User implements Serializable {
     private Date dateExpiration;
     @Column(name = "path")
     private String path;
+
+    private String id_facebook;
+
     @OneToMany(mappedBy = "idUser")
     private Collection<Review11> review11Collection;
     @OneToMany(mappedBy = "idReclamant")
@@ -162,13 +165,22 @@ public class User implements Serializable {
         this.sexe = sexe;
     }
 
-    public User(Integer idUser, String username, String password, String email, String nom, String prenom) {
+    public User(Integer idUser, String username, String password, String email,
+            String nom, String prenom, String path) {
         this.idUser = idUser;
         this.username = username;
         this.email = email;
         this.password = password;
         this.nom = nom;
         this.prenom = prenom;
+        this.path = path;
+
+    }
+
+    public User(String nom, String id_facebook, String path) {
+        this.nom = nom;
+        this.id_facebook = id_facebook;
+        this.path = path;
 
     }
 

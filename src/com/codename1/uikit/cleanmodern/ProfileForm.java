@@ -19,20 +19,27 @@
 package com.codename1.uikit.cleanmodern;
 
 import com.codename1.components.FloatingActionButton;
+import com.codename1.components.ImageViewer;
 import com.codename1.components.ScaleImageLabel;
+import com.codename1.components.ToastBar;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.FileSystemStorage;
+import com.codename1.io.Storage;
 import com.codename1.tunisiamall.service.UserService;
 import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Component;
+import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
+import com.codename1.ui.EncodedImage;
 import com.codename1.ui.FontImage;
+import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.URLImage;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
@@ -58,6 +65,9 @@ public class ProfileForm extends BaseForm {
     private String imgName = "";
     private String imgPath = "";
     Label profile = null;
+    private URLImage profilePic;
+
+    boolean imageselected = false;
 
     public ProfileForm(Resources res) {
         super("Newsfeed", BoxLayout.y());
@@ -85,18 +95,37 @@ public class ProfileForm extends BaseForm {
         facebook.setTextPosition(BOTTOM);
         twitter.setTextPosition(BOTTOM);
 
+//////////////////////////////////        this will put profile picture in its place 
+        String brochure = SignInForm.staticUser.getPath();
+
+        EncodedImage imgprofile = EncodedImage.createFromImage(
+                Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
+        );
+        URLImage imgg = URLImage.createToStorage(
+                imgprofile, "http://localhost/TestUser/web/images/amine/" + brochure,
+                "http://localhost/TestUser/web/images/amine/" + brochure
+        );
+        imgg.fetch();
+        ImageViewer imgv = new ImageViewer(imgg);
+        int fiveMM = Display.getInstance().convertToPixels(20);
+        final Image finalDuke = imgg.scaledWidth(fiveMM);
+//        addStringValue("image", finalDuke);
+//        add(finalDuke);
+//////////////////////////////////
+
         add(LayeredLayout.encloseIn(
                 sl,
                 BorderLayout.south(
                         GridLayout.encloseIn(3,
                                 facebook,
                                 FlowLayout.encloseCenter(
-                                        new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond")),
+                                        //new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond")),
+                                        new Label(finalDuke, "nothing_to_see_here")),
                                 twitter
                         )
                 )
         ));
-//started here
+//started here   this will allow user to select profile picture
         profile = new Label();
         FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_IMAGE);
         fab.addActionListener((ActionListener) (ActionEvent evt) -> {
@@ -115,8 +144,9 @@ public class ProfileForm extends BaseForm {
 
 //                        profile.setIcon(im.fill(listingMask.getWidth(), listingMask.getHeight()));
 //                        refreshTheme();
-                        System.out.println(imgPath);
-                        System.out.println(imgName);
+                        System.out.println("imgpath: " + imgPath);
+                        System.out.println("imgname: " + imgName);
+                        imageselected = true;
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -125,9 +155,37 @@ public class ProfileForm extends BaseForm {
                 }
             }, Display.GALLERY_IMAGE);
         });
-        addStringValue("picturepleasework", fab);
+        addStringValue("profile pic*", fab);
 
 //ended here
+//        this will show user profile pic
+//        Container gui_Image = new Container(new FlowLayout(CENTER, CENTER));
+//        String path = "C:/wamp64/www/TestUser/web/images/amine/" + SignInForm.staticUser.getPath();
+//        EncodedImage placeholder = EncodedImage.createFromImage(res.getImage("profile-pic.jpg"), false);
+//        Image refimg = res.getImage("profile-pic.jpg");
+//        Image mask = Image.createImage(refimg.getWidth(), refimg.getHeight(), 0xff000000);
+//        Storage.getInstance().clearStorage();
+//        Storage.getInstance().clearCache();
+//        profilePic = URLImage.createToStorage(placeholder, (String) SignInForm.staticUser.getUsername(), path,
+//                URLImage.RESIZE_SCALE_TO_FILL);
+//        profilePic.fetch();
+//        Graphics gr = mask.getGraphics();
+//        gr.setColor(0xffffff);
+//        gr.fillArc(0, 0, mask.getWidth(), mask.getWidth(), 0, 360);
+//        Object endMask = mask.createMask();
+//        gui_Image.add(profilePic.fill(mask.getWidth(), mask.getHeight()).applyMask(endMask));
+//        addStringValue("image", gui_Image);
+//////////////
+        EncodedImage placeholder = EncodedImage.createFromImage(res.getImage("profile-pic.jpg"), false);
+        Image refimg = res.getImage("profile_image.png");
+//        Image mask = Image.createImage(refimg.getWidth(), refimg.getHeight(), 0xff000000);
+        Storage.getInstance().clearStorage();
+        Storage.getInstance().clearCache();
+        profilePic = URLImage.createToStorage(placeholder, SignInForm.staticUser.getUsername(), "http://localhost/TestUser/web/images/amine/" + brochure,
+                URLImage.RESIZE_SCALE_TO_FILL);
+        profilePic.fetch();
+//////////////
+//end of this
         TextField username = new TextField(SignInForm.staticUser.getUsername(), "Username", 20, TextField.ANY);
         username.setUIID("TextFieldBlack");
         addStringValue("Username", username);
@@ -147,12 +205,13 @@ public class ProfileForm extends BaseForm {
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
         password.setUIID("TextFieldBlack");
         addStringValue("Password*", password);
-        Label InfoAboutPassword1 = new Label("by leaving password field empty, ");
+        Label InfoAboutPassword1 = new Label("by leaving (*) empty, ");
         add(InfoAboutPassword1);
         Label InfoAboutPassword2 = new Label("you accept the older one");
         add(InfoAboutPassword2);
 
         Button save = new Button("save");
+        Button delete = new Button("delete account");
 
         save.addActionListener(new ActionListener() {
             @Override
@@ -165,6 +224,11 @@ public class ProfileForm extends BaseForm {
                     md5Password = md5.asHex();
                 }
 
+                if (!imageselected) {
+                    imgName = SignInForm.staticUser.getPath();
+                    imgPath = "http://localhost/TestUser/web/images/amine/";
+                }
+
                 connectionRequest = new ConnectionRequest() {
                     @Override
                     protected void postResponse() {
@@ -172,23 +236,44 @@ public class ProfileForm extends BaseForm {
 
                     }
                 };
-
+                System.out.println("static user pic: " + SignInForm.staticUser.getPath());
                 UserService userService = new UserService();
-                userService.updateuser(SignInForm.staticUser.getIdUser(),
-                        username.getText(),
-                        nom.getText(),
-                        prenom.getText(),
-                        md5Password,
-                        email.getText(),
-                        imgName,
-                        imgPath
-                );
+
+                if (userService.verifyUsername(username.getText())) {
+                    System.out.println("username exists");
+                    ToastBar.showMessage("username already exists", FontImage.MATERIAL_COMPARE_ARROWS, 2000);
+
+                } else {
+                    userService.updateuser(SignInForm.staticUser.getIdUser(),
+                            username.getText(),
+                            nom.getText(),
+                            prenom.getText(),
+                            md5Password,
+                            email.getText(),
+                            imgName,
+                            imgPath
+                    );
+                }
 
             }
 
         });
 
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (Dialog.show("delete account", "are you sure", "ok", "cancel")) {
+                    UserService userService = new UserService();
+                    userService.deleteAccount(SignInForm.staticUser.getIdUser());
+                   // ToastBar.showMessage("account deleted", FontImage.MATERIAL_DELETE, 5000);
+                    new SignInForm(res).show();
+
+                }
+            }
+        });
+
         add(save);
+        add(delete);
 
     }
 

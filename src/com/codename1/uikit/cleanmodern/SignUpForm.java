@@ -18,25 +18,33 @@
  */
 package com.codename1.uikit.cleanmodern;
 
+import com.codename1.components.FloatingActionButton;
 import com.codename1.components.FloatingHint;
 import com.codename1.components.OnOffSwitch;
+import com.codename1.components.ToastBar;
 import com.codename1.io.ConnectionRequest;
+import com.codename1.io.FileSystemStorage;
 import com.codename1.tunisiamall.service.UserService;
 import com.codename1.ui.Button;
+import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
+import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.URLImage;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Signup UI
@@ -50,6 +58,10 @@ public class SignUpForm extends BaseForm {
     private final Container content;
     private final TextField username, nom, prenom, password, mail;
 //    private final Button save;
+    private String imgName = "";
+    private String imgPath = "";
+    Label profile = null;
+    private URLImage profilePic;
 
     public SignUpForm(Resources res) {
         super(new BorderLayout());
@@ -63,6 +75,37 @@ public class SignUpForm extends BaseForm {
         getTitleArea().setUIID("Container");
         setUIID("SignIn");
 
+////////////////////////        
+        profile = new Label();
+        FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_IMAGE);
+        fab.addActionListener((ActionListener) (ActionEvent evt) -> {
+            Display.getInstance().openGallery((ActionListener) (ActionEvent ev) -> {
+                if (ev != null && ev.getSource() != null) {
+                    imgPath = (String) ev.getSource();
+                    int fileNameIndex = imgPath.lastIndexOf("/") + 1;
+                    imgName = imgPath.substring(fileNameIndex);
+
+                    try {
+
+                        InputStream is = FileSystemStorage.getInstance().openInputStream(imgPath);
+                        Image im = Image.createImage(is);
+
+                        Image listingMask = res.getImage("refimg2.jpg");
+
+//                        profile.setIcon(im.fill(listingMask.getWidth(), listingMask.getHeight()));
+//                        refreshTheme();
+                        System.out.println(imgPath);
+                        System.out.println(imgName);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, Display.GALLERY_IMAGE);
+        });
+
+////////////////////////
         username = new TextField("", "username", 20, TextField.ANY);
 
         nom = new TextField("", "nom", 20, TextField.ANY);
@@ -81,6 +124,8 @@ public class SignUpForm extends BaseForm {
 
         content = BoxLayout.encloseY(
                 new Label("Sign Up", "LogoLabel"),
+                fab,
+                createLineSeparator(),
                 new FloatingHint(username),
                 createLineSeparator(),
                 new FloatingHint(nom),
@@ -106,7 +151,7 @@ public class SignUpForm extends BaseForm {
                 signInForm.show();
             }
         });
-        
+
         next.requestFocus();
         next.addActionListener(new ActionListener() {
             @Override
@@ -123,8 +168,22 @@ public class SignUpForm extends BaseForm {
                 };
 
                 UserService userService = new UserService();
-                userService.adduser(username.getText(), nom.getText(), prenom.getText(),
-                        md5Password, mail.getText());
+                if (userService.verifyUsername(username.getText())) {
+                    System.out.println("username exists");
+                    ToastBar.showMessage("username already exists", FontImage.MATERIAL_COMPARE_ARROWS, 2000);
+
+                } else {
+                    System.out.println("username doesnt exists");
+                    userService.adduser(
+                            username.getText(),
+                            nom.getText(),
+                            prenom.getText(),
+                            md5Password,
+                            mail.getText(),
+                            imgName,
+                            imgPath
+                    );
+                }
 
             }
         });

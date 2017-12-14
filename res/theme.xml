@@ -5,6 +5,8 @@
     <image name="confirmation-background.jpg"  />
     <image name="dog.jpg"  />
     <image name="facebook-logo.png" type="multi"  />
+    <image name="Header-Background.jpg"  />
+    <image name="Image 1"  />
     <image name="Logo.png" type="multi"  />
     <image name="news-item-1.jpg"  />
     <image name="news-item-2.jpg"  />
@@ -69,6 +71,11 @@
         <val key="CenterLink.padUnit" value="2,2,2,2" />
         <val key="CenterLink.padding" value="2,2,1,1" />
         <val key="CenterLink.transparency" value="0" />
+        <border key="Command.border" type="empty" />
+        <val key="Command.fgColor" value="ffffff" />
+        <font key="Command.font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="3.5" />
+        <val key="Command.padUnit" value="2,2,2,2" />
+        <val key="Command.padding" value="1.0,1.0,1.0,1.0" />
         <val key="DatePickerDay.align" value="4" />
         <val key="DatePickerDay.fgColor" value="ffffff" />
         <font key="DatePickerDay.font" type="ttf" face="0" style="0" size="0" name="native:MainThin" family="native:MainThin" sizeSettings="3" actualSize="4.5" />
@@ -93,6 +100,9 @@
         <font key="DatePickerMonth.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
         <val key="DatePickerMonth.sel#transparency" value="0" />
         <val key="DatePickerMonth.transparency" value="0" />
+        <val key="FloatingActionButtonShrunk.bgColor" value="ff3366" />
+        <val key="FloatingActionButtonShrunk.marUnit" value="2,2,2,2" />
+        <val key="FloatingActionButtonShrunk.margin" value="5.0,0.0,0.0,1.0" />
         <val key="FloatingHint.align" value="4" />
         <val key="FloatingHint.fgColor" value="a2a1b8" />
         <font key="FloatingHint.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
@@ -200,6 +210,16 @@
         <val key="SelectBar.sel#padding" value="2,3,0,0" />
         <val key="SelectBar.sel#transparency" value="255" />
         <val key="SelectBar.transparency" value="255" />
+        <val key="ShopToolbar.bgImage" value="Header-Background.jpg" />
+        <val key="ShopToolbar.bgType" value="33" />
+        <val key="ShopToolbar.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="ShopToolbar.padUnit" value="2,2,2,2" />
+        <val key="ShopToolbar.padding" value="0.0,3.0,1.0,1.0" />
+        <val key="ShopToolbarShrunk.bgColor" value="51d2c2" />
+        <val key="ShopToolbarShrunk.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="ShopToolbarShrunk.padUnit" value="2,2,2,2" />
+        <val key="ShopToolbarShrunk.padding" value="0.0,1.0,0.0,12.0" />
+        <val key="ShopToolbarShrunk.transparency" value="255" />
         <border key="SideCommand.border" type="empty" />
         <val key="SideCommand.fgColor" value="0" />
         <font key="SideCommand.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
@@ -300,6 +320,13 @@
         <val key="TitleCommand.sel#padding" value="2,2,2,2" />
         <val key="TitleCommand.sel#transparency" value="0" />
         <val key="TitleCommand.transparency" value="0" />
+        <val key="TitleShrunk.align" value="1" />
+        <val key="TitleShrunk.fgColor" value="ffffff" />
+        <font key="TitleShrunk.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.5" />
+        <val key="TitleShrunk.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="TitleShrunk.padUnit" value="2,2,2,2" />
+        <val key="TitleShrunk.padding" value="0.0,0.0,8.0,1.0" />
+        <val key="TitleShrunk.transparency" value="0" />
         <gradient key="Toolbar.bgGradient" color1="0" color2="0" posX="0.5" posY="0.5" radius="1.0" />
         <val key="Toolbar.bgType" value="0" />
         <border key="Toolbar.border" type="empty" />

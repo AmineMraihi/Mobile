@@ -5,6 +5,7 @@
  */
 package com.codename1.uikit.cleanmodern;
 
+import com.codename1.components.FloatingActionButton;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
@@ -12,8 +13,14 @@ import com.codename1.components.ShareButton;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.io.ConnectionRequest;
+import com.codename1.io.File;
+import com.codename1.io.FileSystemStorage;
 import com.codename1.io.JSONParser;
+import com.codename1.io.MultipartRequest;
+import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
+import com.codename1.io.Storage;
+import com.codename1.social.FacebookConnect;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import static com.codename1.ui.CN.callSerially;
@@ -28,6 +35,7 @@ import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
+import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.InfiniteContainer;
@@ -39,6 +47,7 @@ import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
+import com.codename1.ui.animations.ComponentAnimation;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.geom.Dimension;
@@ -50,11 +59,18 @@ import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
+import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.entities.Evenement;
 import com.codename1.uikit.entities.User;
+import com.restfb.BinaryAttachment;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,30 +94,36 @@ public class EventPage extends BaseForm {
     private boolean finishedLoading;
     private long lastScroll;
     private boolean messageShown;
+//byte data[] ;
+
+    private Resources theme;
 
     public EventPage(Resources res) {
         super("Newsfeed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
-//        getTitleArea().setUIID("Container");
         setTitle("Newsfeed");
         getContentPane().setScrollVisible(false);
 
         super.addSideMenu(res);
+        tb.addCommandToRightBar("favs", null, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                favouriteEventsForm ef = new favouriteEventsForm(res);
+                ef.show();
+            }
+        });
         tb.addSearchCommand(e -> {
         });
-
+//
         Tabs swipe = new Tabs();
-
         Label spacer1 = new Label();
         Label spacer2 = new Label();
         addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "TunisiaMall Events ");
         addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
-
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
         swipe.hideTabs();
-
         ButtonGroup bg = new ButtonGroup();
         int size = Display.getInstance().convertToPixels(1);
         Image unselectedWalkthru = Image.createImage(size, size, 0);
@@ -135,37 +157,120 @@ public class EventPage extends BaseForm {
 
         Component.setSameSize(radioContainer, spacer1, spacer2);
         add(LayeredLayout.encloseIn(swipe, radioContainer));
-
         ButtonGroup barGroup = new ButtonGroup();
 
         System.out.println(getAllEvents().size());
 
+//started here this to show a better ui 
+//        theme = UIManager.initFirstTheme("/theme");
+//        Toolbar.setGlobalToolbar(true);
+//        Toolbar.setGlobalToolbar(false);
+//        Form shoppingList = new Form("Shop", BoxLayout.y());
+//Toolbar tb = new Toolbar(true);
+//        shoppingList.setToolbar(tb);
+//        tb.setUIID("ShopToolbar");
+//        
+//        FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_ADD);
+//        if(!fab.getUIManager().isThemeConstant("paintsTitleBarBool", false)) {
+//            fab.getAllStyles().setMarginTop(18);
+//        }
+//        fab.bindFabToContainer(shoppingList.getContentPane(), Component.RIGHT, Component.TOP);
+//        
+//        Button back = new Button("", "Command");
+//        FontImage.setMaterialIcon(back, FontImage.MATERIAL_ARROW_BACK);
+//        Button search = new Button("", "Command");
+//        FontImage.setMaterialIcon(search, FontImage.MATERIAL_SEARCH);
+//        Button reply = new Button("", "Command");
+//        FontImage.setMaterialIcon(reply, FontImage.MATERIAL_REPLY);
+//        
+//        Label titleLabel = new Label("Shop", "Title");
+//        
+//        Container titleAndBack = LayeredLayout.encloseIn(titleLabel,
+//                FlowLayout.encloseIn(back));
+//        Container titleComponent = BorderLayout.west(titleAndBack).
+//                add(BorderLayout.EAST, 
+//                        FlowLayout.encloseRight(reply, search)
+//                        );
+//        tb.setTitleComponent(titleComponent);
+//        
+//        ComponentAnimation c1 = tb.createStyleAnimation("ShopToolbarShrunk", 200);
+//        ComponentAnimation c2 = titleLabel.createStyleAnimation("TitleShrunk", 200);
+//        ComponentAnimation c3 = fab.createStyleAnimation("FloatingActionButtonShrunk", 200);
+//        shoppingList.getAnimationManager().onTitleScrollAnimation(c1, c2, c3);
+//        
+//        Label filler = new Label(" ");
+//        filler.setPreferredSize(tb.getPreferredSize());
+//        shoppingList.add(filler);
+//        shoppingList.show();
+//ended here
         Container list = new Container(BoxLayout.y());
         list.setScrollableY(true);
+
         for (Evenement e : getAllEvents()) {
             String brochure = e.getPath();
             EncodedImage img = EncodedImage.createFromImage(
                     Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
             );
-            URLImage imgg = URLImage.createToStorage(img, "http://localhost/TestUser/web/images/amine/" + brochure, "http://localhost/TestUser/web/images/amine/" + brochure);
+            URLImage imgg = URLImage.createToStorage(img, "http://localhost/TestUser/web/images/amine/"
+                    + brochure, "http://localhost/TestUser/web/images/amine/" + brochure);
             imgg.fetch();
             ImageViewer imgv = new ImageViewer(imgg);
             int fiveMM = Display.getInstance().convertToPixels(5);
             final Image finalDuke = imgg.scaledWidth(fiveMM);
 
-            list.add(createRankWidget(finalDuke, e.getNom(), e.getNom()));
+            list.add(createRankWidget(imgg, finalDuke, e.getNom(), e.getDescription()));
+
+            theme = res;
+
         }
         add(list);
+
     }
 
 //    started here 
-    public SwipeableContainer createRankWidget(Image c, String title, String year) {
+    public SwipeableContainer createRankWidget(URLImage imgg, Image c, String title, String desc) {
         MultiButton button = new MultiButton(title);
-        button.setTextLine2(year);
+//        button.setTextLine2(desc);
 
         button.setIcon(c);
-        ShareButton share = new ShareButton();
+
+        Button share = new Button();
+        share.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+//                String filename = (String) evt.getSource();
+//                MultipartRequest req = new MultipartRequest();
+//                String endpoint;
+//                endpoint = "https://graph.facebook.com/me/photos?access_token=EAACEdEose0cBAFZB6woF4KZChpkZAlagx2uM7C3zBU9LyU4PzoNgvHH33ICZBgHwLi7e37AcorCxhUqFqwwoor6CZB8Lk35l9Rn1NaUoilImVkAZCVJGk15gFAhWTFXRM2JCODu4P8kYXntzOM93aibRznNE14Q5qgOel3V4xsUX7iZAuEO5PZBeoRIZB6UKe7l1BSzXuEzHE4QZDZD";
+//                req.setUrl(endpoint);
+//                req.addArgument("message", "test");
+//                InputStream is=
+//                InputStream is = null;
+//                try {
+//                    is = FileSystemStorage.getInstance().openInputStream(filename);
+//                    req.addData("source", is, FileSystemStorage.getInstance().getLength(filename), "image/jpeg");
+//                    NetworkManager.getInstance().addToQueue(req);
+//                } catch (IOException ioe) {
+//                    ioe.printStackTrace();
+//                }
+
+//                String accessToken = "EAACEdEose0cBADg540ggrQ5htVNZBn8AIa7Ej3wjEC7muLoZBOKgKRC1w14QHsQ9qNuR7MpPOSqv4duYZCMPSzg2j5bXnSv98wnKa5ZB46pPhZC9oZCxUNZAz2NYkRaRWjsarbmsRLFNY7yHu0cZBerQ0PPWLthqNTGPjLo8lJhAb7N02xDq5QpAvHd6rkOaHMMfo9u5mQdydwZDZD";
+//                FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+//                FacebookType response = fbClient.publish("me/feed", FacebookType.class,
+//                Parameter.with("test", "test")
+//        );
+            }
+        });
         FontImage.setMaterialIcon(share, FontImage.MATERIAL_SHARE, 8);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+//                EventDetailsForm detailsForm=new EventDetailsForm(theme);
+//                detailsForm.show();
+                EventDetailsForm detailsForm = new EventDetailsForm(imgg, c, title, desc, theme);
+                detailsForm.show();
+            }
+        });
         return new SwipeableContainer(share,
                 button);
     }

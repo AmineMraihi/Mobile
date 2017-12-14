@@ -18,14 +18,18 @@
  */
 package com.codename1.uikit.cleanmodern;
 
+import com.codename1.components.ImageViewer;
 import com.codename1.components.ScaleImageLabel;
+import com.codename1.io.Storage;
 import com.codename1.ui.Component;
 import com.codename1.ui.Display;
+import com.codename1.ui.EncodedImage;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.URLImage;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.FlowLayout;
@@ -33,6 +37,7 @@ import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
 
 /**
  * Base class for the forms with common functionality
@@ -40,6 +45,8 @@ import com.codename1.ui.util.Resources;
  * @author Shai Almog
  */
 public class BaseForm extends Form {
+    
+    
 
     public BaseForm() {
     }
@@ -66,7 +73,35 @@ public class BaseForm extends Form {
         return separator;
     }
 
-    protected void addSideMenu(Resources res) {
+    protected void addSideMenu(Resources res)  {
+
+//////////////////////          this will put profile picture in its place 
+        String brochure = SignInForm.staticUser.getPath();
+//        String brochure1 = SignInForm.staticUser.getPath();
+
+//        System.out.println(brochure1);
+        EncodedImage imgprofile = EncodedImage.createFromImage(
+                Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
+        );
+        URLImage imgg = URLImage.createToStorage(
+                imgprofile, "http://localhost/TestUser/web/images/amine/" + brochure,
+                "http://localhost/TestUser/web/images/amine/" + brochure
+        );
+//        URLImage imgg = URLImage.createToStorage(
+//                imgprofile, brochure,
+//                brochure
+//        );
+        imgg.fetch();
+//        imgg1.fetch();
+
+        ImageViewer imgv = new ImageViewer(imgg);
+//        ImageViewer imgv1 = new ImageViewer(imgg1);
+
+        int fiveMM = Display.getInstance().convertToPixels(20);
+        final Image finalDuke = imgg.scaledWidth(fiveMM);
+            //        final Image finalDuke1 = imgg1.scaledWidth(fiveMM);
+//            Image finalDuke12 = Image.createImage(Storage.getInstance().createInputStream(brochure));
+//////////////////////
         Toolbar tb = getToolbar();
         Image img = res.getImage("profile-background.jpg");
         if (img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
@@ -79,7 +114,8 @@ public class BaseForm extends Form {
         tb.addComponentToSideMenu(LayeredLayout.encloseIn(
                 sl,
                 FlowLayout.encloseCenterBottom(
-                        new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
+                        //new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
+                        new Label(finalDuke, "nothing_to_see_here"))
         ));
 
         tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE,
@@ -92,7 +128,7 @@ public class BaseForm extends Form {
                 new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                BlankPage blankPage=new BlankPage(res);
+                BlankPage blankPage = new BlankPage(res);
                 blankPage.show();
             }
         });
