@@ -5,9 +5,15 @@
  */
 package com.codename1.uikit.cleanmodern;
 
+import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
+import com.codename1.io.ConnectionRequest;
+import com.codename1.io.JSONParser;
+import com.codename1.io.NetworkEvent;
+import com.codename1.io.NetworkManager;
+import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.Component;
@@ -16,14 +22,18 @@ import static com.codename1.ui.Component.CENTER;
 import static com.codename1.ui.Component.LEFT;
 import static com.codename1.ui.Component.RIGHT;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;
+import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
+import com.codename1.ui.InfiniteContainer;
 import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
 import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
+import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -34,32 +44,46 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.plaf.Style;
+import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
+import com.codename1.uikit.entities.DemandeEmploi;
+import com.codename1.uikit.entities.OffreEmploi;
+import com.codename1.uikit.entities.User;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Amine
  */
-public class BlankPage extends BaseForm {
+public class ModifierDemande extends BaseForm {
 
-    public BlankPage(Resources res) {
-        super("Newsfeed", BoxLayout.y());
+    // User u = SignInForm.staticUser;
+    // OffreEmploi e = OffreEmploiPage.StaticOffre;
+    //DemandeEmploi d = MesDemandesPage.staticDemande1;
+    //   DemandeEmploi d = DemandeEmploi();
+    public ModifierDemande(Resources res, DemandeEmploi d) {
+        super("", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
 //        getTitleArea().setUIID("Container");
-        setTitle("Newsfeed");
+        setTitle("");
         getContentPane().setScrollVisible(false);
 
         super.addSideMenu(res);
-       /* tb.addSearchCommand(e -> {
-        });*/
+        tb.addSearchCommand(e -> {
+        });
 
         Tabs swipe = new Tabs();
 
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-        addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "Integer ut placerat purued non dignissim neque. ");
-        addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
+        addTab(swipe, res.getImage("profile-background.jpg"), spacer1, "", "", "");
+       //addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
 
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
@@ -100,6 +124,95 @@ public class BlankPage extends BaseForm {
         add(LayeredLayout.encloseIn(swipe, radioContainer));
 
         ButtonGroup barGroup = new ButtonGroup();
+
+        Button btnModifD = new Button("Modifier");
+
+          Container modifD = new Container(new BoxLayout( BoxLayout.y().Y_AXIS) );
+
+        System.out.println("Modifier");
+
+        int idd = d.getIdDemande();
+        System.out.println(idd);
+
+        int ido = d.getIdOffreFk();
+        System.out.println(ido);
+
+        int idu = d.getIdUserFk();
+        System.out.println(idu);
+
+        String n = d.getNomEmp();
+        System.out.println(n);
+
+        String p = d.getPrenomEmp();
+        System.out.println(p);
+
+        String ad = d.getAdresse();
+        System.out.println(ad);
+
+        String se = d.getSexe();
+        System.out.println(se);
+
+        String em = d.getEmail();
+        System.out.println(em);
+
+        String num = d.getNumTel();
+        System.out.println(num);
+
+        String qualif = d.getQualification();
+        System.out.println(qualif);
+
+        Label nom = new Label("Nom");
+        TextField nomt = new TextField(n);
+        nomt.getStyle().setFgColor(0x000000);
+
+        Label prenom = new Label("Prenom");
+        TextField prenomt = new TextField(p);
+        prenomt.getStyle().setFgColor(0x000000);
+
+        Label adresse = new Label("Adresse");
+        TextField adresset = new TextField(ad);
+        adresset.getStyle().setFgColor(0x000000);
+
+        Label sexe = new Label("Sexe");
+        TextField sexet = new TextField(se);
+        sexet.getStyle().setFgColor(0x000000);
+
+        Label email = new Label("Email");
+        TextField emailt = new TextField(em);
+        emailt.getStyle().setFgColor(0x000000);
+
+        Label numtel = new Label("Numero de telephone");
+        TextField numt = new TextField(num);
+        numt.getStyle().setFgColor(0x000000);
+
+        Label qualification = new Label("Qualification");
+        TextField qualift = new TextField(qualif);
+        qualift.getStyle().setFgColor(0x000000);
+
+        modifD.add(nom).add(nomt).add(prenom).add(prenomt).add(adresse).add(adresset).add(sexe).add(sexet).add(email).add(emailt).add(numtel).add(numt).add(qualification).add(qualift);
+
+        modifD.add(btnModifD);
+
+        add(modifD);
+
+        btnModifD.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+
+                ConnectionRequest req = new ConnectionRequest();
+                //req.setUrl("http://localhost:8082/crud/ajouterDemande.php?id_user_fk=" +idu+ "$id_offre_fk=" +ido+ "$NomEmp=" + nomt.getText() + "&PrenomEmp=" + prenomt.getText() + "&adresse=" + adresset.getText()+ "&sexe=" + sexet.getText() + "&numTel=" + numt.getText() + "&email=" + emailt.getText() + "&qualification=" + qualift.getText() + "&exper="+ expt.getText() + "");
+
+                req.setUrl("http://localhost:8082/crud/modifierDemande.php?id_demande=" + idd + "&id_user_fk=" + idu + "&id_offre_fk=" + ido + "&nom_emp=" + nomt.getText() + "&prenom_emp=" + prenomt.getText() + "&adresse=" + adresset.getText() + "&sexe=" + sexet.getText() + "&email=" + emailt.getText() + "&numTel=" + numt.getText() + "&qualification=" + qualift.getText());
+
+                NetworkManager.getInstance().addToQueue(req);
+
+                MesDemandesPage mesdemande = new MesDemandesPage(res);
+                mesdemande.show();
+            }
+            
+        });
+
     }
 
     private void updateArrowPosition(Button b, Label arrow) {
@@ -186,4 +299,5 @@ public class BlankPage extends BaseForm {
             }
         });
     }
+
 }

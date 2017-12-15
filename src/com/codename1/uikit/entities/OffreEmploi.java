@@ -5,6 +5,7 @@
  */
 package com.codename1.uikit.entities;
 
+import com.codename1.ui.util.Resources;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -56,8 +57,8 @@ public class OffreEmploi implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "salaire")
     private Double salaire;
-    @Column(name = "nbr_demand\u00e9")
-    private Integer nbrDemandé;
+    @Column(name = "nbr_demande")
+    private Integer nbrDemande;
     @Column(name = "date_expiration")
     @Temporal(TemporalType.DATE)
     private Date dateExpiration;
@@ -79,6 +80,37 @@ public class OffreEmploi implements Serializable {
         this.idUserFk = idUserFk;
     }
 
+    public OffreEmploi(Integer idOffre, int idUserFk, String poste, String specialite, Integer nbrDemande) {
+        this.idOffre = idOffre;
+        this.idUserFk = idUserFk;
+        this.poste = poste;
+        this.specialite = specialite;
+        this.nbrDemande = nbrDemande;
+    }
+
+    
+    
+    public OffreEmploi(String poste, String specialite, Double salaire, Integer nbrDemande) {
+        this.poste = poste;
+        this.specialite = specialite;
+        this.salaire = salaire;
+        this.nbrDemande = nbrDemande;
+     }
+
+        public OffreEmploi(String poste, String specialite,Integer nbrDemande) {
+        this.poste = poste;
+        this.specialite = specialite;
+       
+        this.nbrDemande = nbrDemande;
+     }
+
+        public OffreEmploi(String poste, String specialite) {
+        this.poste = poste;
+        this.specialite = specialite;
+       
+      
+     }
+        
     public Integer getIdOffre() {
         return idOffre;
     }
@@ -119,12 +151,12 @@ public class OffreEmploi implements Serializable {
         this.salaire = salaire;
     }
 
-    public Integer getNbrDemandé() {
-        return nbrDemandé;
+    public Integer getNbrDemande() {
+        return nbrDemande;
     }
 
-    public void setNbrDemandé(Integer nbrDemandé) {
-        this.nbrDemandé = nbrDemandé;
+    public void setNbrDemande(Integer nbrDemande) {
+        this.nbrDemande = nbrDemande;
     }
 
     public Date getDateExpiration() {
@@ -173,7 +205,9 @@ public class OffreEmploi implements Serializable {
 
     @Override
     public String toString() {
-        return "com.codename1.uikit.entities.OffreEmploi[ idOffre=" + idOffre + " ]";
+        return "OffreEmploi{" + "idOffre=" + idOffre + ", idUserFk=" + idUserFk + ", poste=" + poste + ", specialite=" + specialite + ", salaire=" + salaire + ", nbrDemande=" + nbrDemande + ", dateExpiration=" + dateExpiration + ", idBoutiqueFk=" + idBoutiqueFk + ", demandeEmploiCollection=" + demandeEmploiCollection + '}';
     }
+
+  
     
 }

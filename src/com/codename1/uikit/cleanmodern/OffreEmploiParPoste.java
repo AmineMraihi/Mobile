@@ -5,9 +5,13 @@
  */
 package com.codename1.uikit.cleanmodern;
 
+import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
+import com.codename1.io.ConnectionRequest;
+import com.codename1.io.JSONParser;
+import com.codename1.io.NetworkManager;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.Component;
@@ -16,14 +20,17 @@ import static com.codename1.ui.Component.CENTER;
 import static com.codename1.ui.Component.LEFT;
 import static com.codename1.ui.Component.RIGHT;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
+import com.codename1.ui.InfiniteContainer;
 import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
 import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
+import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -35,31 +42,72 @@ import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import static com.codename1.uikit.cleanmodern.OffreEmploiPage.Offreposte;
+import com.codename1.uikit.entities.OffreEmploi;
+import com.codename1.uikit.entities.User;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Amine
  */
-public class BlankPage extends BaseForm {
+public class OffreEmploiParPoste extends BaseForm {
 
-    public BlankPage(Resources res) {
-        super("Newsfeed", BoxLayout.y());
+    List<OffreEmploi> listOffres = new ArrayList<>();
+    public static OffreEmploi StaticOffre = null;
+    
+    OffreEmploi op = OffreEmploiPage.Offreposte;
+  //  String post=OffreEmploiPage.post;
+  //  public static User staticUser;
+    
+    
+    public OffreEmploiParPoste(Resources res) {
+ 
+        super("", BoxLayout.y());
+        
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
 //        getTitleArea().setUIID("Container");
-        setTitle("Newsfeed");
+        setTitle("");
         getContentPane().setScrollVisible(false);
 
-        super.addSideMenu(res);
-       /* tb.addSearchCommand(e -> {
+        //Container c = new Container(BoxLayout.y());
+        //  Button b = new Button("Chercher");
+        //  TextField p = new TextField("", "Chercher par poste", 20, TextArea.ANY);
+        
+          
+             super.addSideMenu(res);
+
+          
+      // c.add(p).add(b);
+       
+       
+       /* b.addActionListener(new ActionListener() {
+          
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+             
+                  OffreEmploiParPoste poste = new OffreEmploiParPoste(res);
+                    poste.show();
+                
+                
+            }
+            
+             
         });*/
+
 
         Tabs swipe = new Tabs();
 
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-        addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "Integer ut placerat purued non dignissim neque. ");
-        addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
+        addTab(swipe, res.getImage("profile-background.jpg"), spacer1, "", "", "");
+      //  addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
 
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
@@ -100,6 +148,47 @@ public class BlankPage extends BaseForm {
         add(LayeredLayout.encloseIn(swipe, radioContainer));
 
         ButtonGroup barGroup = new ButtonGroup();
+
+           Container list = new Container(new BoxLayout( BoxLayout.y().Y_AXIS) );
+    
+        for (OffreEmploi e : getAllPoste()) {
+            Label l = new Label("Poste:");
+            MultiButton mb = new MultiButton(e.getPoste());
+            Label l1 = new Label("Specialité:");
+            MultiButton mb1 = new MultiButton(e.getSpecialite());
+            Label l2 = new Label("Nombre demandé:");
+            MultiButton mb2 = new MultiButton(e.getNbrDemande().toString());
+            Button bt = new Button("Poster demande");
+
+            // MultiButton mb5 = new MultiButton(e.getDateExpiration().toString());
+            list.add(l);
+            list.add(mb);
+
+            list.add(l1);
+            list.add(mb1);
+
+            list.add(l2);
+            list.add(mb2);
+
+            list.add(bt);
+            System.out.println(e);
+            bt.addActionListener(new ActionListener() {
+                @Override
+
+                public void actionPerformed(ActionEvent evt) {
+                    StaticOffre = new OffreEmploi();
+                    StaticOffre = e;
+                    System.out.println("bbbbbbbbbbbbbbbbbbb");
+                   System.out.println(StaticOffre);
+                    DemandePageParPoste demandepage = new DemandePageParPoste(res);
+                    demandepage.show();
+                   
+                }
+            });
+
+        }
+//        add(c);
+        add(list);
     }
 
     private void updateArrowPosition(Button b, Label arrow) {
@@ -186,4 +275,64 @@ public class BlankPage extends BaseForm {
             }
         });
     }
+
+ 
+    
+    public List<OffreEmploi> getAllPoste() {
+        //    List<Map<String, Object>> all = new ArrayList<>();
+        ConnectionRequest request = new ConnectionRequest("http://localhost:8082/crud/listOffresParPoste.php?poste=" + op.getPoste() + "");
+        NetworkManager.getInstance().addToQueueAndWait(request);
+        Map<String, Object> result = null;
+
+        try {
+            result = new JSONParser().parseJSON(new InputStreamReader(new ByteArrayInputStream(request.getResponseData()), "UTF-8"));
+
+            List<Map<String, Object>> response = (List<Map<String, Object>>) result.get("root");
+            System.out.println(op);
+            if (response!=null){
+            for (Map<String, Object> obj : response) {
+              /*  OffreEmploi e = new OffreEmploi((int) Float.parseFloat(obj.get("id_offre").toString()), (int) Float.parseFloat(obj.get(SignInForm.staticUser.getIdUser()).toString()), (String) obj.get("poste"),
+                        (String) obj.get("specialite"), ((int) Float.parseFloat(obj.get("nbr_demande").toString()))
+                );*/
+              OffreEmploi e = new OffreEmploi();
+              
+              e.setIdOffre((int) Float.parseFloat(obj.get("id_offre").toString()));
+                System.out.println(e.getIdOffre());
+             
+                User u = SignInForm.staticUser;
+               
+         //   e.setIdUserFk((int) Float.parseFloat(obj.get(u.getIdUser()).toString()));
+         int i = u.getIdUser();
+       
+         e.setIdUserFk(i);
+             
+             System.out.println(e.getIdUserFk());
+             
+              e.setPoste((String) obj.get("poste"));
+                System.out.println(e.getPoste());
+              
+              e.setSpecialite((String) obj.get("specialite"));
+               System.out.println(e.getSpecialite());
+              
+              e.setNbrDemande(((int) Float.parseFloat(obj.get("nbr_demande").toString())));
+               System.out.println(e.getNbrDemande());
+              
+                listOffres.add(e);
+            }
+            }
+           
+            else { Dialog.show("", "Poste n'existe pas", "OK", null);
+            
+            }
+            
+            System.out.println(listOffres.size());
+        } catch (IOException ex) {
+            System.out.println("EXCEPTION : " + ex);
+
+        }
+        return listOffres;
+
+    }
+    
+    
 }

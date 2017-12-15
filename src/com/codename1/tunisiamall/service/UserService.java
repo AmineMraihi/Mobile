@@ -39,7 +39,7 @@ public class UserService {
             }
         };
 
-        connectionRequest.setUrl("http://localhost/crud/insert.php?"
+        connectionRequest.setUrl("http://localhost:8082/crud/insert.php?"
                 + "username=" + username
                 + "&name=" + nom
                 + "&prenom=" + prenom
@@ -75,7 +75,7 @@ public class UserService {
             }
         };
 
-        connectionRequest.setUrl("http://localhost/crud/UpdateProfile.php?"
+        connectionRequest.setUrl("http://localhost:8082/crud/UpdateProfile.php?"
                 + "username=" + username
                 + "&name=" + nom
                 + "&prenom=" + prenom
@@ -91,7 +91,7 @@ public class UserService {
 
     public boolean verifyUsername(String username) {
         List<Map<String, Object>> all = new ArrayList<>();
-        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/seletUsername.php?"
+        ConnectionRequest request = new ConnectionRequest("http://localhost:8082/crud/seletUsername.php?"
                 + "username=" + username);
         NetworkManager.getInstance().addToQueueAndWait(request);
         Map<String, Object> result = null;
@@ -115,7 +115,7 @@ public class UserService {
 
     public void deleteAccount(int id) {
         List<Map<String, Object>> all = new ArrayList<>();
-        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/deleteAcccount.php?"
+        ConnectionRequest request = new ConnectionRequest("http://localhost:8082/crud/deleteAcccount.php?"
                 + "id=" + id);
         NetworkManager.getInstance().addToQueueAndWait(request);
         Map<String, Object> result = null;

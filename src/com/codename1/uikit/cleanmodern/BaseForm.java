@@ -84,8 +84,8 @@ public class BaseForm extends Form {
                 Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
         );
         URLImage imgg = URLImage.createToStorage(
-                imgprofile, "http://localhost/TestUser/web/images/amine/" + brochure,
-                "http://localhost/TestUser/web/images/amine/" + brochure
+                imgprofile, "http://localhost:8082/TestUser/web/images/amine/" + brochure,
+                "http://localhost:8082/TestUser/web/images/amine/" + brochure
         );
 //        URLImage imgg = URLImage.createToStorage(
 //                imgprofile, brochure,
@@ -142,8 +142,21 @@ public class BaseForm extends Form {
             }
         });
 
-        tb.addMaterialCommandToSideMenu("Offre d'emploi", FontImage.MATERIAL_UPDATE,
-                e -> new NewsfeedForm(res).show());
+         tb.addMaterialCommandToSideMenu("Offre d'emploi", FontImage.MATERIAL_UPDATE,
+              e -> new OffreEmploiPage(res).show());
+        
+        tb.addMaterialCommandToSideMenu("Mes demandes", FontImage.MATERIAL_UPDATE,
+               new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+              //  User u = SignInForm.staticUser;
+              //  id = u.getIdUser();
+              //  System.out.println(id);
+                MesDemandesPage mesdemande = new MesDemandesPage(res);
+                mesdemande.show();
+            }
+        });
+        
 
         tb.addMaterialCommandToSideMenu("Parking", FontImage.MATERIAL_UPDATE,
                 e -> new NewsfeedForm(res).show());

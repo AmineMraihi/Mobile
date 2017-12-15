@@ -102,8 +102,8 @@ public class ProfileForm extends BaseForm {
                 Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
         );
         URLImage imgg = URLImage.createToStorage(
-                imgprofile, "http://localhost/TestUser/web/images/amine/" + brochure,
-                "http://localhost/TestUser/web/images/amine/" + brochure
+                imgprofile, "http://localhost:8082/TestUser/web/images/amine/" + brochure,
+                "http://localhost:8082/TestUser/web/images/amine/" + brochure
         );
         imgg.fetch();
         ImageViewer imgv = new ImageViewer(imgg);
@@ -181,7 +181,7 @@ public class ProfileForm extends BaseForm {
 //        Image mask = Image.createImage(refimg.getWidth(), refimg.getHeight(), 0xff000000);
         Storage.getInstance().clearStorage();
         Storage.getInstance().clearCache();
-        profilePic = URLImage.createToStorage(placeholder, SignInForm.staticUser.getUsername(), "http://localhost/TestUser/web/images/amine/" + brochure,
+        profilePic = URLImage.createToStorage(placeholder, SignInForm.staticUser.getUsername(), "http://localhost:8082/TestUser/web/images/amine/" + brochure,
                 URLImage.RESIZE_SCALE_TO_FILL);
         profilePic.fetch();
 //////////////
@@ -226,7 +226,7 @@ public class ProfileForm extends BaseForm {
 
                 if (!imageselected) {
                     imgName = SignInForm.staticUser.getPath();
-                    imgPath = "http://localhost/TestUser/web/images/amine/";
+                    imgPath = "http://localhost:8082/TestUser/web/images/amine/";
                 }
 
                 connectionRequest = new ConnectionRequest() {

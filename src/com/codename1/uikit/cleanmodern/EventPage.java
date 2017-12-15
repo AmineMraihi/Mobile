@@ -63,11 +63,6 @@ import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.entities.Evenement;
 import com.codename1.uikit.entities.User;
-import com.restfb.BinaryAttachment;
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
-import com.restfb.Parameter;
-import com.restfb.types.FacebookType;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -211,8 +206,8 @@ public class EventPage extends BaseForm {
             EncodedImage img = EncodedImage.createFromImage(
                     Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
             );
-            URLImage imgg = URLImage.createToStorage(img, "http://localhost/TestUser/web/images/amine/"
-                    + brochure, "http://localhost/TestUser/web/images/amine/" + brochure);
+            URLImage imgg = URLImage.createToStorage(img, "http://localhost:8082/TestUser/web/images/amine/"
+                    + brochure, "http://localhost:8082/TestUser/web/images/amine/" + brochure);
             imgg.fetch();
             ImageViewer imgv = new ImageViewer(imgg);
             int fiveMM = Display.getInstance().convertToPixels(5);
