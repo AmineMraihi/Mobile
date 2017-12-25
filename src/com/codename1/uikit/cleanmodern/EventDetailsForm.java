@@ -10,6 +10,8 @@ import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.io.Storage;
+import com.codename1.messaging.Message;
+import com.codename1.tunisiamall.service.EventService;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.Component;
@@ -19,23 +21,27 @@ import static com.codename1.ui.Component.LEFT;
 import static com.codename1.ui.Component.RIGHT;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
+import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
+import com.codename1.ui.Slider;
 import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.layouts.Layout;
+import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import java.util.List;
@@ -52,12 +58,12 @@ public class EventDetailsForm extends BaseForm {
     private Image favoriteUnsel;
     private Image favoriteSel;
 
-    public EventDetailsForm(URLImage imgg, Image c, String nom, String desc, Resources res) {
+    public EventDetailsForm(int id, URLImage imgg, Image c, String nom, String desc, Resources res) {
         super("Newsfeed", BoxLayout.y());
-       
+
         favoriteSel = FontImage.createMaterial(FontImage.MATERIAL_STAR, "TitleCommand", 3.5f);
         favoriteUnsel = FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, "TitleCommand", 3.5f);
-       
+
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
 //        getTitleArea().setUIID("Container");
@@ -79,8 +85,7 @@ public class EventDetailsForm extends BaseForm {
 
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-        addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "Integer ut placerat purued non dignissim neque. ");
-        addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
+        addTab(swipe, res.getImage("background.png"), spacer1, null, null, null);
 
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
@@ -122,21 +127,54 @@ public class EventDetailsForm extends BaseForm {
 
         ButtonGroup barGroup = new ButtonGroup();
 
+//////////////////////////////////////////////////////////////////////////////////////////        
+//        Message m = new Message("Body of message");
+//        m.getAttachments().put("text", "text/plain");
+//        Display.getInstance().sendMessage(new String[]{"amine.mraihi@esprit.tn"}, "Subject of message", m);
+
+//////////////////////////////////////////////////////////////////////////////////////////
         Label nomevent = new Label(nom);
-        Label descevent = new Label(desc);
+//        Label descevent = new Label(desc);
+        TextArea desc1 = new TextArea(desc);
+        desc1.setEditable(false);
 
         ImageViewer imgv = new ImageViewer(imgg);
         int fiveMM = Display.getInstance().convertToPixels(40);
         final Image finalDuke = imgg.scaledWidth(fiveMM);
+        final Slider sld = createStarRankSlider();
+        sld.setEditable(true);
+        EventService es = new EventService();
+
+        sld.setProgress(es.returnRate(SignInForm.staticUser.getIdUser(), id));
+//        sld = createStarRankSlider();
+
+        Button review = new Button("review");
+        review.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+//                sld.setProgress(50);
+                System.out.println(sld.getProgress());
+                EventService es = new EventService();
+
+                es.addReview(
+                        SignInForm.staticUser.getIdUser(),
+                        id,
+                        Integer.toString(sld.getProgress())
+                );
+            }
+        });
 
         add(finalDuke);
         add(nomevent);
-        add(descevent);
+//        add(descevent);
+        add(desc1);
+
+        add(FlowLayout.encloseCenter(sld));
+        add(review);
 
     }
-    
-    
-     //    started here
+
+    //    started here
     void setFavorite(Map<String, Object> currentListing, boolean fav) {
         if (fav) {
             favoritesList.add(currentListing);
@@ -164,8 +202,6 @@ public class EventDetailsForm extends BaseForm {
         return guid;
     }
 //    ended here
-    
-    
 
     private void updateArrowPosition(Button b, Label arrow) {
         arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth() / 2 - arrow.getWidth() / 2);
@@ -251,4 +287,33 @@ public class EventDetailsForm extends BaseForm {
             }
         });
     }
+
+//    started here
+    private void initStarRankStyle(Style s, Image star) {
+        s.setBackgroundType(Style.BACKGROUND_IMAGE_TILE_BOTH);
+        s.setBorder(Border.createEmpty());
+        s.setBgImage(star);
+        s.setBgTransparency(0);
+    }
+
+    private Slider createStarRankSlider() {
+        Slider starRank = new Slider();
+        starRank.setEditable(true);
+        starRank.setMinValue(0);
+        starRank.setMaxValue(10);
+        Font fnt = Font.createTrueTypeFont("native:MainLight", "native:MainLight").
+                derive(Display.getInstance().convertToPixels(5, true), Font.STYLE_PLAIN);
+        Style s = new Style(0xffff33, 0, fnt, (byte) 0);
+        Image fullStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+        s.setOpacity(100);
+        s.setFgColor(0);
+        Image emptyStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+        initStarRankStyle(starRank.getSliderEmptySelectedStyle(), emptyStar);
+        initStarRankStyle(starRank.getSliderEmptyUnselectedStyle(), emptyStar);
+        initStarRankStyle(starRank.getSliderFullSelectedStyle(), fullStar);
+        initStarRankStyle(starRank.getSliderFullUnselectedStyle(), fullStar);
+        starRank.setPreferredSize(new Dimension(fullStar.getWidth() * 5, fullStar.getHeight()));
+        return starRank;
+    }
+//    ended here
 }

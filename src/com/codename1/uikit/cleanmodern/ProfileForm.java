@@ -183,7 +183,10 @@ public class ProfileForm extends BaseForm {
         Storage.getInstance().clearCache();
         profilePic = URLImage.createToStorage(placeholder, SignInForm.staticUser.getUsername(), "http://localhost/TestUser/web/images/amine/" + brochure,
                 URLImage.RESIZE_SCALE_TO_FILL);
-        profilePic.fetch();
+        try {
+            profilePic.fetch();
+        } catch (RuntimeException r) {
+        }
 //////////////
 //end of this
         TextField username = new TextField(SignInForm.staticUser.getUsername(), "Username", 20, TextField.ANY);
@@ -239,9 +242,13 @@ public class ProfileForm extends BaseForm {
                 System.out.println("static user pic: " + SignInForm.staticUser.getPath());
                 UserService userService = new UserService();
 
-                if (userService.verifyUsername(username.getText())) {
+                if (userService.verifyUsernameforupdate(username.getText(), SignInForm.staticUser.getIdUser())) {
                     System.out.println("username exists");
                     ToastBar.showMessage("username already exists", FontImage.MATERIAL_COMPARE_ARROWS, 2000);
+
+                } else if (userService.verifyMailforupdate(email.getText(), SignInForm.staticUser.getIdUser())) {
+                    System.out.println("mail exists");
+                    ToastBar.showMessage("mail already exists", FontImage.MATERIAL_COMPARE_ARROWS, 2000);
 
                 } else {
                     userService.updateuser(SignInForm.staticUser.getIdUser(),
@@ -265,7 +272,7 @@ public class ProfileForm extends BaseForm {
                 if (Dialog.show("delete account", "are you sure", "ok", "cancel")) {
                     UserService userService = new UserService();
                     userService.deleteAccount(SignInForm.staticUser.getIdUser());
-                   // ToastBar.showMessage("account deleted", FontImage.MATERIAL_DELETE, 5000);
+                    // ToastBar.showMessage("account deleted", FontImage.MATERIAL_DELETE, 5000);
                     new SignInForm(res).show();
 
                 }

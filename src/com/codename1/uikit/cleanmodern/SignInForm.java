@@ -19,6 +19,7 @@
 package com.codename1.uikit.cleanmodern;
 
 import com.codename1.components.FloatingHint;
+import com.codename1.components.ToastBar;
 import com.codename1.io.AccessToken;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
@@ -27,11 +28,13 @@ import com.codename1.io.Preferences;
 import com.codename1.social.FacebookConnect;
 import com.codename1.social.Login;
 import com.codename1.social.LoginCallback;
+import com.codename1.tunisiamall.service.UserService;
 import com.codename1.uikit.entities.User;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
@@ -98,23 +101,6 @@ public class SignInForm extends BaseForm {
             theme = res;
             doLogin(fb, new FacebookData(), false);
 
-//            String clientId = "139609243415619";
-//            String redirectURI = "http://127.0.0.1/TestUser/web/images/amine/goodbadugly.jpg";
-//            String clientSecret = "003b5c9a295dd9192c8b3df7af15a1bd";
-//            Login fb = FacebookConnect.getInstance();
-//            fb.setClientId(clientId);
-//            fb.setRedirectURI(redirectURI);
-//            fb.setClientSecret(clientSecret);
-//            //Sets a LoginCallback listener
-////            fb.setCallback();
-//                //trigger the login if not already logged in
-//                if (!fb.isUserLoggedIn()) {
-//                fb.doLogin();
-//            } else {
-//                //get the token and now you can query the facebook API
-//                String token = fb.getAccessToken().getToken();
-//                
-//            }
         });
 
 //        ended here
@@ -132,57 +118,67 @@ public class SignInForm extends BaseForm {
         signIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                connectionRequest = new ConnectionRequest() {
+//                connectionRequest = new ConnectionRequest() {
+//
+//                    @Override
+//                    protected void readResponse(InputStream input) throws IOException {
+//
+//                        MD5 md5 = new MD5(password.getText());
+//                        String md5Password = md5.asHex();
+//
+//                        JSONParser json = new JSONParser();
+//                        Reader reader = new InputStreamReader(input, "UTF-8");
+//                        Map<String, Object> data = json.parseJSON(reader);
+//                        List<Map<String, Object>> content = (List<Map<String, Object>>) data.get("root");
+//
+//                        for (Map<String, Object> obj : content) {
+//                            u.add(new User(
+//                                    Integer.parseInt(obj.get("id_user").toString()),
+//                                    (String) obj.get("username"),
+//                                    (String) obj.get("password"),
+//                                    (String) obj.get("email"),
+//                                    (String) obj.get("nom"),
+//                                    (String) obj.get("prenom"),
+//                                    (String) obj.get("path")
+//                            ));
+//                        }
+//
+//                        for (User user : u) {
+//                            if (username.getText().equals(user.getUsername())
+//                                    && md5Password.equals(user.getPassword())) {
+//                                System.out.println("it works!");
+//                                staticUser = new User();
+//                                staticUser.setIdUser(user.getIdUser());
+//                                staticUser.setUsername(user.getUsername());
+//                                staticUser.setNom(user.getNom());
+//                                staticUser.setPrenom(user.getPrenom());
+//                                staticUser.setEmail(user.getEmail());
+//                                staticUser.setPassword(user.getPassword());
+//                                staticUser.setPath(user.getPath());
+//
+//                                test = true;
+//                                NewsfeedForm w = new NewsfeedForm(res);
+//                                w.show();
+//                            }
+//                        }
+//                        if (!test) {
+//                            System.out.println("wrong credentials ");
+//                        }
+//                    }
+//
+//                };
+//                connectionRequest.setUrl("http://localhost/crud/login.php");
+//                NetworkManager.getInstance().addToQueue(connectionRequest);
 
-                    @Override
-                    protected void readResponse(InputStream input) throws IOException {
+                UserService service = new UserService();
+                if (service.verification(username.getText(), password.getText())) {
+                    NewsfeedForm w = new NewsfeedForm(res);
+                    w.show();
+                } else {
+                    ToastBar.showMessage("wrong credentials ", FontImage.MATERIAL_COMPARE_ARROWS, 2000);
 
-                        MD5 md5 = new MD5(password.getText());
-                        String md5Password = md5.asHex();
+                }
 
-                        JSONParser json = new JSONParser();
-                        Reader reader = new InputStreamReader(input, "UTF-8");
-                        Map<String, Object> data = json.parseJSON(reader);
-                        List<Map<String, Object>> content = (List<Map<String, Object>>) data.get("root");
-
-                        for (Map<String, Object> obj : content) {
-                            u.add(new User(
-                                    Integer.parseInt(obj.get("id_user").toString()),
-                                    (String) obj.get("username"),
-                                    (String) obj.get("password"),
-                                    (String) obj.get("email"),
-                                    (String) obj.get("nom"),
-                                    (String) obj.get("prenom"),
-                                    (String) obj.get("path")
-                            ));
-                        }
-
-                        for (User user : u) {
-                            if (username.getText().equals(user.getUsername())
-                                    && md5Password.equals(user.getPassword())) {
-                                System.out.println("it works!");
-                                staticUser = new User();
-                                staticUser.setIdUser(user.getIdUser());
-                                staticUser.setUsername(user.getUsername());
-                                staticUser.setNom(user.getNom());
-                                staticUser.setPrenom(user.getPrenom());
-                                staticUser.setEmail(user.getEmail());
-                                staticUser.setPassword(user.getPassword());
-                                staticUser.setPath(user.getPath());
-
-                                test = true;
-                                NewsfeedForm w = new NewsfeedForm(res);
-                                w.show();
-                            }
-                        }
-                        if (!test) {
-                            System.out.println("wrong credentials ");
-                        }
-                    }
-
-                };
-                connectionRequest.setUrl("http://localhost/crud/login.php");
-                NetworkManager.getInstance().addToQueue(connectionRequest);
             }
         });
 
@@ -223,6 +219,7 @@ public class SignInForm extends BaseForm {
 //                return;
 //            }
             }
+
         }
 
         lg.setCallback(new LoginCallback() {
@@ -255,18 +252,55 @@ public class SignInForm extends BaseForm {
                     System.out.println(fullName);
                     System.out.println(imageURL);
 
-                    User m = new User(fullName, uniqueId,imageURL);
                     staticUser = new User();
-                                staticUser.setNom(fullName);
-                                staticUser.setPath(imageURL);
-                    
-                    NewsfeedForm newsfeedForm=new NewsfeedForm(theme);
+                    staticUser.setNom(fullName);
+                    staticUser.setPath(imageURL);
+
+                    System.out.println("facebook id:  " + uniqueId);
+
+                    UserService userService = new UserService();
+
+                    User returnedUser = userService.getUserViaFacebookid(uniqueId);
+
+                    if (returnedUser != null) {
+                        staticUser = new User();
+                        staticUser.setIdUser(returnedUser.getIdUser());
+                        staticUser.setUsername(returnedUser.getUsername());
+                        staticUser.setNom(returnedUser.getNom());
+                        staticUser.setPrenom(returnedUser.getPrenom());
+                        staticUser.setEmail(returnedUser.getEmail());
+                        staticUser.setPassword(returnedUser.getPassword());
+                        staticUser.setPath(returnedUser.getPath());
+                    } else {
+                        userService.addUserViaFacebook(
+                                "",
+                                fullName,
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                uniqueId
+                        );
+
+                        User returnedUser1 = userService.getUserViaFacebookid(uniqueId);
+                        staticUser = new User();
+                        staticUser.setIdUser(returnedUser1.getIdUser());
+                        staticUser.setUsername(returnedUser1.getUsername());
+                        staticUser.setNom(returnedUser1.getNom());
+                        staticUser.setPrenom(returnedUser1.getPrenom());
+                        staticUser.setEmail(returnedUser1.getEmail());
+                        staticUser.setPassword(returnedUser1.getPassword());
+                        staticUser.setPath(returnedUser1.getPath());
+                    }
+
+                    NewsfeedForm newsfeedForm = new NewsfeedForm(theme);
                     newsfeedForm.show();
                 });
             }
         });
         lg.doLogin();
-        
+
     }
 
     long tokenExpirationInMillis(AccessToken token) {

@@ -172,6 +172,10 @@ public class SignUpForm extends BaseForm {
                     System.out.println("username exists");
                     ToastBar.showMessage("username already exists", FontImage.MATERIAL_COMPARE_ARROWS, 2000);
 
+                } else if (userService.verifymail(mail.getText())) {
+                    System.out.println("mail exists");
+                    ToastBar.showMessage("mail already exists", FontImage.MATERIAL_COMPARE_ARROWS, 2000);
+
                 } else {
                     System.out.println("username doesnt exists");
                     userService.adduser(

@@ -119,8 +119,6 @@ public class User implements Serializable {
     @Column(name = "path")
     private String path;
 
-    private String id_facebook;
-
     @OneToMany(mappedBy = "idUser")
     private Collection<Review11> review11Collection;
     @OneToMany(mappedBy = "idReclamant")
@@ -130,6 +128,8 @@ public class User implements Serializable {
     @JoinColumn(name = "id_boutique", referencedColumnName = "id_boutique")
     @ManyToOne
     private Boutique idBoutique;
+
+    private String facebook_id;
     @OneToMany(mappedBy = "idUser")
     private Collection<CarteFidelite> carteFideliteCollection;
     @OneToMany(mappedBy = "idUser")
@@ -177,12 +177,20 @@ public class User implements Serializable {
 
     }
 
-    public User(String nom, String id_facebook, String path) {
+    public User(Integer idUser, String username, String password, String email,
+            String nom, String prenom, String path, String facebook_id) {
+        this.idUser = idUser;
+        this.username = username;
+        this.email = email;
+        this.password = password;
         this.nom = nom;
-        this.id_facebook = id_facebook;
+        this.prenom = prenom;
         this.path = path;
+        this.facebook_id = facebook_id;
 
     }
+
+   
 
     public Integer getIdUser() {
         return idUser;
@@ -431,6 +439,14 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "com.codename1.uikit.entities.User[ idUser=" + idUser + " ]";
+    }
+
+    public String getFacebook_id() {
+        return facebook_id;
+    }
+
+    public void setFacebook_id(String facebook_id) {
+        this.facebook_id = facebook_id;
     }
 
 }

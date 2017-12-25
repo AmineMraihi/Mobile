@@ -55,7 +55,7 @@ public class NewsfeedForm extends BaseForm {
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         getTitleArea().setUIID("Container");
-        setTitle("Newsfeed");
+        setTitle("Welcome");
         getContentPane().setScrollVisible(false);
         
         super.addSideMenu(res);
@@ -65,8 +65,7 @@ public class NewsfeedForm extends BaseForm {
 
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-        addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "Integer ut placerat purued non dignissim neque. ");
-        addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
+        addTab(swipe, res.getImage("background.png"), spacer1, null, null, null);
                 
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
@@ -106,42 +105,43 @@ public class NewsfeedForm extends BaseForm {
         Component.setSameSize(radioContainer, spacer1, spacer2);
         add(LayeredLayout.encloseIn(swipe, radioContainer));
         
-        ButtonGroup barGroup = new ButtonGroup();
-        RadioButton all = RadioButton.createToggle("All", barGroup);
-        all.setUIID("SelectBar");
-        RadioButton featured = RadioButton.createToggle("Featured", barGroup);
-        featured.setUIID("SelectBar");
-        RadioButton popular = RadioButton.createToggle("Popular", barGroup);
-        popular.setUIID("SelectBar");
-        RadioButton myFavorite = RadioButton.createToggle("My Favorites", barGroup);
-        myFavorite.setUIID("SelectBar");
-        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
-        
-        add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(4, all, featured, popular, myFavorite),
-                FlowLayout.encloseBottom(arrow)
-        ));
-        
-        all.setSelected(true);
-        arrow.setVisible(false);
-        addShowListener(e -> {
-            arrow.setVisible(true);
-            updateArrowPosition(all, arrow);
-        });
-        bindButtonSelection(all, arrow);
-        bindButtonSelection(featured, arrow);
-        bindButtonSelection(popular, arrow);
-        bindButtonSelection(myFavorite, arrow);
-        
-        // special case for rotation
-        addOrientationListener(e -> {
-            updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
-        });
-        
-        addButton(res.getImage("news-item-1.jpg"), "Morbi per tincidunt tellus sit of amet eros laoreet.", false, 26, 32);
-        addButton(res.getImage("news-item-2.jpg"), "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21);
-        addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
-        addButton(res.getImage("news-item-4.jpg"), "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9);
+//        ButtonGroup barGroup = new ButtonGroup();
+//        RadioButton all = RadioButton.createToggle("All", barGroup);
+//        all.setUIID("SelectBar");
+//        RadioButton featured = RadioButton.createToggle("Featured", barGroup);
+//        featured.setUIID("SelectBar");
+//        RadioButton popular = RadioButton.createToggle("Popular", barGroup);
+//        popular.setUIID("SelectBar");
+//        RadioButton myFavorite = RadioButton.createToggle("My Favorites", barGroup);
+//        myFavorite.setUIID("SelectBar");
+//        Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
+//        
+//        add(LayeredLayout.encloseIn(
+//                GridLayout.encloseIn(4, all, featured, popular, myFavorite),
+//                FlowLayout.encloseBottom(arrow)
+//        ));
+//        
+//        all.setSelected(true);
+//        arrow.setVisible(false);
+//        addShowListener(e -> {
+//            arrow.setVisible(true);
+//            updateArrowPosition(all, arrow);
+//        });
+//        bindButtonSelection(all, arrow);
+//        bindButtonSelection(featured, arrow);
+//        bindButtonSelection(popular, arrow);
+//        bindButtonSelection(myFavorite, arrow);
+//        
+//        // special case for rotation
+//        addOrientationListener(e -> {
+//            updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
+//        });
+//        
+//        addButton(res.getImage("news-item-1.jpg"), "Morbi per tincidunt tellus sit of amet eros laoreet.", false, 26, 32);
+//        addButton(res.getImage("news-item-2.jpg"), "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21);
+//        addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
+//        addButton(res.getImage("news-item-4.jpg"), "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9);
+//    
     }
     
     private void updateArrowPosition(Button b, Label arrow) {

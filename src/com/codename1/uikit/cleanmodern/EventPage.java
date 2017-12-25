@@ -5,25 +5,25 @@
  */
 package com.codename1.uikit.cleanmodern;
 
-import com.codename1.components.FloatingActionButton;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.ShareButton;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
+import com.codename1.facebooksdk.FBConnect;
 import com.codename1.io.ConnectionRequest;
-import com.codename1.io.File;
 import com.codename1.io.FileSystemStorage;
 import com.codename1.io.JSONParser;
 import com.codename1.io.MultipartRequest;
-import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
-import com.codename1.io.Storage;
+import com.codename1.messaging.Message;
 import com.codename1.social.FacebookConnect;
+import com.codename1.social.Login;
+import com.codename1.tunisiamall.service.EventService;
+import com.codename1.ui.AutoCompleteTextField;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
-import static com.codename1.ui.CN.callSerially;
 import com.codename1.ui.Component;
 import static com.codename1.ui.Component.BOTTOM;
 import static com.codename1.ui.Component.CENTER;
@@ -35,10 +35,8 @@ import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
-import com.codename1.ui.Form;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
-import com.codename1.ui.InfiniteContainer;
 import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
 import com.codename1.ui.Slider;
@@ -47,27 +45,19 @@ import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
-import com.codename1.ui.animations.ComponentAnimation;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
-import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
-import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
-import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.entities.Evenement;
-import com.codename1.uikit.entities.User;
-import com.restfb.BinaryAttachment;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
-import com.restfb.Parameter;
-import com.restfb.types.FacebookType;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -102,25 +92,24 @@ public class EventPage extends BaseForm {
         super("Newsfeed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
-        setTitle("Newsfeed");
+        setTitle("TunisiaMall Events");
         getContentPane().setScrollVisible(false);
 
         super.addSideMenu(res);
-        tb.addCommandToRightBar("favs", null, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                favouriteEventsForm ef = new favouriteEventsForm(res);
-                ef.show();
-            }
-        });
+
         tb.addSearchCommand(e -> {
         });
-//
+
+        AutoCompleteTextField ac = new AutoCompleteTextField("Short", "Shock", "Sholder", "Shrek");
+        ac.setMinimumElementsShownInPopup(5);
+        ac.setUIID("aminerecherche");
+        add(ac);
+
         Tabs swipe = new Tabs();
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-        addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "TunisiaMall Events ");
-        addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
+        addTab(swipe, res.getImage("background.png"), spacer1, null, null, null);
+
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
         swipe.hideTabs();
@@ -159,7 +148,9 @@ public class EventPage extends BaseForm {
         add(LayeredLayout.encloseIn(swipe, radioContainer));
         ButtonGroup barGroup = new ButtonGroup();
 
-        System.out.println(getAllEvents().size());
+        EventService es = new EventService();
+
+        System.out.println(es.getAllEvents().size());
 
 //started here this to show a better ui 
 //        theme = UIManager.initFirstTheme("/theme");
@@ -204,9 +195,9 @@ public class EventPage extends BaseForm {
 //        shoppingList.show();
 //ended here
         Container list = new Container(BoxLayout.y());
-        list.setScrollableY(true);
+//        list.setScrollableY(true);
 
-        for (Evenement e : getAllEvents()) {
+        for (Evenement e : es.getAllEvents()) {
             String brochure = e.getPath();
             EncodedImage img = EncodedImage.createFromImage(
                     Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
@@ -218,7 +209,7 @@ public class EventPage extends BaseForm {
             int fiveMM = Display.getInstance().convertToPixels(5);
             final Image finalDuke = imgg.scaledWidth(fiveMM);
 
-            list.add(createRankWidget(imgg, finalDuke, e.getNom(), e.getDescription()));
+            list.add(createRankWidget(e.getIdEvenement(), imgg, finalDuke, e.getNom(), e.getDescription()));
 
             theme = res;
 
@@ -228,7 +219,7 @@ public class EventPage extends BaseForm {
     }
 
 //    started here 
-    public SwipeableContainer createRankWidget(URLImage imgg, Image c, String title, String desc) {
+    public SwipeableContainer createRankWidget(int id, URLImage imgg, Image c, String title, String desc) {
         MultiButton button = new MultiButton(title);
 //        button.setTextLine2(desc);
 
@@ -259,6 +250,69 @@ public class EventPage extends BaseForm {
 //                FacebookType response = fbClient.publish("me/feed", FacebookType.class,
 //                Parameter.with("test", "test")
 //        );
+//                Display.getInstance().openImageGallery(new ActionListener() {
+//
+//                    public void actionPerformed(ActionEvent evt) {
+//                        if (evt == null) {
+//                            return;
+//                        }
+//                        String filename = (String) evt.getSource();
+//                        if (Dialog.show("Send file?", filename, "OK", "Cancel")) {
+//                            System.out.println(SignInForm.TOKEN);
+//                            MultipartRequest req = new MultipartRequest();
+//                            String endpoint;
+//                            if (FacebookConnect.getInstance().isFacebookSDKSupported()) {
+//                                endpoint = "https://graph.facebook.com/me/photos?access_token=" + FacebookConnect.getInstance().getToken();
+//                            } else {
+//                                endpoint = "https://graph.facebook.com/me/photos?access_token=" + SignInForm.TOKEN;
+//                            }
+//                            req.setUrl(endpoint);
+//                            req.addArgument("message", "test");
+//                            InputStream is = null;
+//                            try {
+//                                is = FileSystemStorage.getInstance().openInputStream(filename);
+//                                req.addData("source", is, FileSystemStorage.getInstance().getLength(filename), "image/jpeg");
+//                                NetworkManager.getInstance().addToQueue(req);
+//                            } catch (IOException ioe) {
+//                                ioe.printStackTrace();
+//                            }
+//                        }
+//
+//                    }
+//                });
+                Message m = new Message("Body of message");
+                m.getAttachments().put("text", "text/plain");
+                Display.getInstance().sendMessage(new String[]{"destination"}, "this event is great check it out!", m);
+
+//                Display.getInstance().openImageGallery(new ActionListener() {
+//
+//                    public void actionPerformed(ActionEvent evt) {
+//                        if (evt == null) {
+//                            return;
+//                        }
+//                        String filename = (String) evt.getSource();
+//                        if (Dialog.show("Send file?", filename, "OK", "Cancel")) {
+//                            MultipartRequest req = new MultipartRequest();
+//                            String endpoint;
+//                            if (FacebookConnect.getInstance().isFacebookSDKSupported()) {
+//                                endpoint = "https://graph.facebook.com/me/photos?access_token=" + FacebookConnect.getInstance().getToken();
+//                            } else {
+//                                endpoint = "https://graph.facebook.com/me/photos?access_token=" + com.codename1.facebooksdk.Login.TOKEN;
+//                            }
+//                            req.setUrl(endpoint);
+//                            req.addArgument("message", "test");
+//                            InputStream is = null;
+//                            try {
+//                                is = FileSystemStorage.getInstance().openInputStream(filename);
+//                                req.addData("source", is, FileSystemStorage.getInstance().getLength(filename), "image/jpeg");
+//                                NetworkManager.getInstance().addToQueue(req);
+//                            } catch (IOException ioe) {
+//                                ioe.printStackTrace();
+//                            }
+//                        }
+//
+//                    }
+//                });
             }
         });
         FontImage.setMaterialIcon(share, FontImage.MATERIAL_SHARE, 8);
@@ -267,10 +321,18 @@ public class EventPage extends BaseForm {
             public void actionPerformed(ActionEvent evt) {
 //                EventDetailsForm detailsForm=new EventDetailsForm(theme);
 //                detailsForm.show();
-                EventDetailsForm detailsForm = new EventDetailsForm(imgg, c, title, desc, theme);
+                EventDetailsForm detailsForm = new EventDetailsForm(id, imgg, c, title, desc, theme);
                 detailsForm.show();
             }
         });
+
+//        ShareButton sb = new ShareButton();
+//        sb.setUIID("Label");
+//        sb.getAllStyles().setAlignment(Component.TOP);
+//        String imageFile = FileSystemStorage.getInstance().getAppHomePath()+"goodbadugly.jpg";
+//        
+//        sb.setImageToShare(imageFile, "image/png");
+//        sb.setTextToShare("My Text to share");
         return new SwipeableContainer(share,
                 button);
     }
@@ -388,30 +450,4 @@ public class EventPage extends BaseForm {
         });
     }
 
-    public List<Evenement> getAllEvents() {
-        List<Map<String, Object>> all = new ArrayList<>();
-        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/select_events.php");
-        NetworkManager.getInstance().addToQueueAndWait(request);
-        Map<String, Object> result = null;
-
-        try {
-            result = new JSONParser().parseJSON(new InputStreamReader(new ByteArrayInputStream(request.getResponseData()), "UTF-8"));
-            List<Map<String, Object>> response = (List<Map<String, Object>>) result.get("root");
-
-            for (Map<String, Object> obj : response) {
-                listevenement.add(
-                        new Evenement(
-                                (String) obj.get("nom"),
-                                (String) obj.get("description"),
-                                (String) obj.get("path")
-                        ));
-            }
-
-        } catch (IOException ex) {
-            System.out.println("EXCEPTION : " + ex);
-
-        }
-        return listevenement;
-
-    }
 }

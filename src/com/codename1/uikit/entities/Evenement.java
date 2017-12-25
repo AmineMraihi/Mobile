@@ -91,6 +91,14 @@ public class Evenement implements Serializable {
         this.description = description;
         this.path = path;
     }
+
+    public Evenement(Integer idEvenement, String nom, String description, String path) {
+        this.idEvenement = idEvenement;
+        this.nom = nom;
+        this.description = description;
+        this.path = path;
+    }
+    
     
     
 
