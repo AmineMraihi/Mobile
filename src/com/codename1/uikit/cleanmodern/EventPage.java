@@ -385,7 +385,7 @@ public class EventPage extends BaseForm {
 
     public List<Evenement> getAllEvents() {
         List<Map<String, Object>> all = new ArrayList<>();
-        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/select_events.php");
+        ConnectionRequest request = new ConnectionRequest("http://localhost:8082/crud/select_events.php");
         NetworkManager.getInstance().addToQueueAndWait(request);
         Map<String, Object> result = null;
 

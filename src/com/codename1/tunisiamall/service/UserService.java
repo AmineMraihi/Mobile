@@ -44,7 +44,7 @@ public class UserService {
                 + "&name=" + nom
                 + "&prenom=" + prenom
                 + "&password=" + password
-                + "&mail=" + mail
+                + "&email=" + mail
                 + "&imagename=" + imagename
                 + "&imagepath=" + imagepath
         );

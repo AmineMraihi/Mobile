@@ -181,11 +181,11 @@ public class MesDemandesPage extends BaseForm {
             list.add(l);
             list.add(mb);
 
-            list.add(l1);
-            list.add(mb1);
-
             list.add(l2);
             list.add(mb2);
+
+            list.add(l1);
+            list.add(mb1);
 
             list.add(l3);
             list.add(mb3);

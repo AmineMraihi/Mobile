@@ -133,6 +133,17 @@ public class BaseForm extends Form {
             }
         });
 
+         tb.addMaterialCommandToSideMenu("Statistique", FontImage.MATERIAL_UPDATE,
+                      new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                MyApplication my = new MyApplication();
+                my.start();
+            }
+        });
+
+        
+        
         tb.addMaterialCommandToSideMenu("Evenement", FontImage.MATERIAL_UPDATE,
                 new ActionListener() {
             @Override

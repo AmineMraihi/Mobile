@@ -45,6 +45,7 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
 import java.io.IOException;
 import java.io.InputStream;
+import org.mindrot.BCrypt;
 
 /**
  * Signup UI
@@ -63,6 +64,13 @@ public class SignUpForm extends BaseForm {
     Label profile = null;
     private URLImage profilePic;
 
+       public String hashmdp(String password)
+    {
+    String hashed = BCrypt.hashpw(password, BCrypt.gensalt()); 
+    return hashed;
+    }
+    
+    
     public SignUpForm(Resources res) {
         super(new BorderLayout());
 
@@ -106,6 +114,8 @@ public class SignUpForm extends BaseForm {
         });
 
 ////////////////////////
+    
+
         username = new TextField("", "username", 20, TextField.ANY);
 
         nom = new TextField("", "nom", 20, TextField.ANY);
@@ -156,8 +166,11 @@ public class SignUpForm extends BaseForm {
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                MD5 md5 = new MD5(password.getText());
-                String md5Password = md5.asHex();
+                String passhash;
+                passhash=hashmdp(password.getText());
+                
+             /*   MD5 md5 = new MD5(password.getText());
+                String md5Password = md5.asHex();*/
 
                 connectionRequest = new ConnectionRequest() {
                     @Override
@@ -178,7 +191,7 @@ public class SignUpForm extends BaseForm {
                             username.getText(),
                             nom.getText(),
                             prenom.getText(),
-                            md5Password,
+                            passhash,
                             mail.getText(),
                             imgName,
                             imgPath

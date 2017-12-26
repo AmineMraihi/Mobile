@@ -49,6 +49,8 @@ import com.codename1.ui.util.Resources;
 import com.codename1.uikit.entities.DemandeEmploi;
 import com.codename1.uikit.entities.OffreEmploi;
 import com.codename1.uikit.entities.User;
+import com.twilio.Twilio;
+import com.twilio.type.PhoneNumber;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -62,6 +64,10 @@ import java.util.Map;
  */
 public class DemandePageParPoste extends BaseForm {
 
+       //  public static final String ACCOUNT_SID = "ACe70e80a817d26dea089caa976cd7c6e9";
+       //  public static final String AUTH_TOKEN = "7640c9fe1b075e89b29624c39d710e31";
+    
+    
     //  List<DemandeEmploi> listOffres = new ArrayList<>();
     public DemandePageParPoste(Resources res) {
         super("", BoxLayout.y());
@@ -216,7 +222,10 @@ ajoutD.add(nom).add(nomt).add(prenom).add(prenomt).add(adresse).add(adresset).ad
                         byte[] data = (byte[]) evt.getMetaData();
                         String s = new String(data);
                        
-                    
+            /*        Twilio.init("ACe70e80a817d26dea089caa976cd7c6e9", "7640c9fe1b075e89b29624c39d710e31");
+         com.twilio.rest.api.v2010.account.Message message = com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber("+21696659302"),
+         new PhoneNumber("+14435683958"),"Votre demande a été ajoutée").create();
+            */
                     
                     }
                 });

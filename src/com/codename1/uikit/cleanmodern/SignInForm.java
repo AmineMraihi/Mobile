@@ -47,6 +47,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.mindrot.BCrypt;
 
 /**
  * Sign in UI
@@ -137,8 +138,8 @@ public class SignInForm extends BaseForm {
                     @Override
                     protected void readResponse(InputStream input) throws IOException {
 
-                        MD5 md5 = new MD5(password.getText());
-                        String md5Password = md5.asHex();
+                   //    MD5 md5 = new MD5(password.getText());
+                 //     String md5Password = md5.asHex();
 
                         JSONParser json = new JSONParser();
                         Reader reader = new InputStreamReader(input, "UTF-8");
@@ -158,8 +159,10 @@ public class SignInForm extends BaseForm {
                         }
 
                         for (User user : u) {
-                            if (username.getText().equals(user.getUsername())
-                                    && md5Password.equals(user.getPassword())) {
+                            if ( username.getText().equals(user.getUsername())
+                                    && BCrypt.checkpw(password.getText(), user.getPassword()) )
+                                    /*md5Password.equals(user.getPassword())*/ 
+                            {
                                 System.out.println("it works!");
                                 staticUser = new User();
                                 staticUser.setIdUser(user.getIdUser());
