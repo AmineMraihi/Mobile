@@ -160,7 +160,7 @@ public class SignInForm extends BaseForm {
 
                         for (User user : u) {
                             if ( username.getText().equals(user.getUsername())
-                                    && BCrypt.checkpw(password.getText(), user.getPassword()) )
+                                   && BCrypt.checkpw(password.getText(), user.getPassword()) )
                                     /*md5Password.equals(user.getPassword())*/ 
                             {
                                 System.out.println("it works!");
@@ -184,7 +184,7 @@ public class SignInForm extends BaseForm {
                     }
 
                 };
-                connectionRequest.setUrl("http://localhost:8082/crud/login.php");
+                connectionRequest.setUrl("http://localhost/crud/login.php");
                 NetworkManager.getInstance().addToQueue(connectionRequest);
             }
         });
@@ -252,7 +252,7 @@ public class SignInForm extends BaseForm {
 
                     // token expiration is in seconds from the current time, we convert it to a System.currentTimeMillis value so we can
                     // reference it in the future to check expiration
-                    Preferences.set(tokenPrefix + "tokenExpires", tokenExpirationInMillis(lg.getAccessToken()));
+                 /////   Preferences.set(tokenPrefix + "tokenExpires", tokenExpirationInMillis(lg.getAccessToken()));
                     // showContactsForm(data);
                     System.out.println("done3");
                     System.out.println(fullName);

@@ -126,6 +126,7 @@ public class Publicite implements Serializable {
         this.page = page;
     }
 
+
     public String getPath() {
         return path;
     }
@@ -169,6 +170,16 @@ public class Publicite implements Serializable {
         }
         return true;
     }
+
+    public Publicite(String path) {
+        this.path = path;
+    }
+
+    public Publicite(Integer idPub, String path) {
+        this.idPub = idPub;
+        this.path = path;
+    }
+   
 
     @Override
     public String toString() {

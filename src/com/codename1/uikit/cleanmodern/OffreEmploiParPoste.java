@@ -280,7 +280,7 @@ public class OffreEmploiParPoste extends BaseForm {
     
     public List<OffreEmploi> getAllPoste() {
         //    List<Map<String, Object>> all = new ArrayList<>();
-        ConnectionRequest request = new ConnectionRequest("http://localhost:8082/crud/listOffresParPoste.php?poste=" + op.getPoste() + "");
+        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/listOffresParPoste.php?poste=" + op.getPoste() + "");
         NetworkManager.getInstance().addToQueueAndWait(request);
         Map<String, Object> result = null;
 

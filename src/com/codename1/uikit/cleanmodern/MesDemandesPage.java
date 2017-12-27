@@ -214,7 +214,7 @@ public class MesDemandesPage extends BaseForm {
                     ConnectionRequest req = new ConnectionRequest();
                     //      req.setUrl("http://localhost:8082/crud/ajouterDemande.php?id_user_fk=" +idu+ "$id_offre_fk=" +ido+ "$NomEmp=" + nomt.getText() + "&PrenomEmp=" + prenomt.getText() + "&adresse=" + adresset.getText()+ "&sexe=" + sexet.getText() + "&numTel=" + numt.getText() + "&email=" + emailt.getText() + "&qualification=" + qualift.getText() + "&exper="+ expt.getText() + "");
 
-                    req.setUrl("http://localhost:8082/crud/supprimerDemande.php?id_demande=" + d.getIdDemande() + "");
+                    req.setUrl("http://localhost/crud/supprimerDemande.php?id_demande=" + d.getIdDemande() + "");
 
                     //MesDemandesPage m = new MesDemandesPage(res);
                     // m.show();
@@ -340,7 +340,7 @@ public class MesDemandesPage extends BaseForm {
     public List<DemandeEmploi> getAllDemandes() {
         //    List<Map<String, Object>> all = new ArrayList<>();
         System.out.println(u.getIdUser());
-        ConnectionRequest request = new ConnectionRequest("http://localhost:8082/crud/listeDemandes.php?id_user_fk=" + u.getIdUser() + "");
+        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/listeDemandes.php?id_user_fk=" + u.getIdUser() + "");
         NetworkManager.getInstance().addToQueueAndWait(request);
 
         Map<String, Object> result = null;

@@ -203,7 +203,7 @@ public class ModifierDemande extends BaseForm {
                 ConnectionRequest req = new ConnectionRequest();
                 //req.setUrl("http://localhost:8082/crud/ajouterDemande.php?id_user_fk=" +idu+ "$id_offre_fk=" +ido+ "$NomEmp=" + nomt.getText() + "&PrenomEmp=" + prenomt.getText() + "&adresse=" + adresset.getText()+ "&sexe=" + sexet.getText() + "&numTel=" + numt.getText() + "&email=" + emailt.getText() + "&qualification=" + qualift.getText() + "&exper="+ expt.getText() + "");
 
-                req.setUrl("http://localhost:8082/crud/modifierDemande.php?id_demande=" + idd + "&id_user_fk=" + idu + "&id_offre_fk=" + ido + "&nom_emp=" + nomt.getText() + "&prenom_emp=" + prenomt.getText() + "&adresse=" + adresset.getText() + "&sexe=" + sexet.getText() + "&email=" + emailt.getText() + "&numTel=" + numt.getText() + "&qualification=" + qualift.getText());
+                req.setUrl("http://localhost/crud/modifierDemande.php?id_demande=" + idd + "&id_user_fk=" + idu + "&id_offre_fk=" + ido + "&nom_emp=" + nomt.getText() + "&prenom_emp=" + prenomt.getText() + "&adresse=" + adresset.getText() + "&sexe=" + sexet.getText() + "&email=" + emailt.getText() + "&numTel=" + numt.getText() + "&qualification=" + qualift.getText());
 
                 NetworkManager.getInstance().addToQueue(req);
 

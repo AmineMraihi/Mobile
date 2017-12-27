@@ -206,8 +206,8 @@ public class EventPage extends BaseForm {
             EncodedImage img = EncodedImage.createFromImage(
                     Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
             );
-            URLImage imgg = URLImage.createToStorage(img, "http://localhost:8082/TestUser/web/images/amine/"
-                    + brochure, "http://localhost:8082/TestUser/web/images/amine/" + brochure);
+            URLImage imgg = URLImage.createToStorage(img, "http://localhost/TestUser/web/images/amine/"
+                    + brochure, "http://localhost/TestUser/web/images/amine/" + brochure);
             imgg.fetch();
             ImageViewer imgv = new ImageViewer(imgg);
             int fiveMM = Display.getInstance().convertToPixels(5);
@@ -385,7 +385,7 @@ public class EventPage extends BaseForm {
 
     public List<Evenement> getAllEvents() {
         List<Map<String, Object>> all = new ArrayList<>();
-        ConnectionRequest request = new ConnectionRequest("http://localhost:8082/crud/select_events.php");
+        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/select_events.php");
         NetworkManager.getInstance().addToQueueAndWait(request);
         Map<String, Object> result = null;
 

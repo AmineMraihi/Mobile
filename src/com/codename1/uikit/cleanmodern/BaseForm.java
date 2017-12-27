@@ -48,7 +48,7 @@ public class BaseForm extends Form {
     
     
 
-    public BaseForm() {
+    public BaseForm()  {
     }
 
     public BaseForm(Layout contentPaneLayout) {
@@ -84,8 +84,8 @@ public class BaseForm extends Form {
                 Image.createImage(Display.getInstance().getDisplayWidth(), 150), true
         );
         URLImage imgg = URLImage.createToStorage(
-                imgprofile, "http://localhost:8082/TestUser/web/images/amine/" + brochure,
-                "http://localhost:8082/TestUser/web/images/amine/" + brochure
+                imgprofile, "http://localhost/TestUser/web/images/amine/" + brochure,
+                "http://localhost/TestUser/web/images/amine/" + brochure
         );
 //        URLImage imgg = URLImage.createToStorage(
 //                imgprofile, brochure,
@@ -117,6 +117,8 @@ public class BaseForm extends Form {
                         //new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
                         new Label(finalDuke, "nothing_to_see_here"))
         ));
+        tb.addMaterialCommandToSideMenu("Liste des Produits", FontImage.MATERIAL_UPDATE, e -> new Produittry2(res).show());
+
 
         tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE,
                 e -> new NewsfeedForm(res).show());

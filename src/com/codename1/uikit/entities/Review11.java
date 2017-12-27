@@ -29,6 +29,7 @@ import javax.persistence.Table;
     , @NamedQuery(name = "Review11.findByIdReview", query = "SELECT r FROM Review11 r WHERE r.idReview = :idReview")
     , @NamedQuery(name = "Review11.findByEmail", query = "SELECT r FROM Review11 r WHERE r.email = :email")
     , @NamedQuery(name = "Review11.findByContenu", query = "SELECT r FROM Review11 r WHERE r.contenu = :contenu")})
+
 public class Review11 implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,10 +44,24 @@ public class Review11 implements Serializable {
     @Basic(optional = false)
     @Column(name = "contenu")
     private String contenu;
-    @JoinColumn(name = "id_user", referencedColumnName = "id_user")
+    
+    
+      @Basic(optional = false)
+    @Column(name = "ab")
+    private String ab;
+      
+    @Basic(optional = false)
+    @Column(name = "id_produit")
+    private int id_produit;
+    
+    
+   /* @JoinColumn(name = "ab", referencedColumnName = "ab")
     @ManyToOne
-    private User idUser;
+    private User ab;
 
+    */
+    
+     
     public Review11() {
     }
 
@@ -58,6 +73,14 @@ public class Review11 implements Serializable {
         this.idReview = idReview;
         this.email = email;
         this.contenu = contenu;
+    }
+
+    public Review11(Integer idReview, String email, String contenu, String ab, int id_produit) {
+        this.idReview = idReview;
+        this.email = email;
+        this.contenu = contenu;
+        this.ab = ab;
+        this.id_produit = id_produit;
     }
 
     public Integer getIdReview() {
@@ -84,12 +107,38 @@ public class Review11 implements Serializable {
         this.contenu = contenu;
     }
 
-    public User getIdUser() {
-        return idUser;
+    public int getId_produit() {
+        return id_produit;
     }
 
-    public void setIdUser(User idUser) {
-        this.idUser = idUser;
+    public void setId_produit(int id_produit) {
+        this.id_produit = id_produit;
+    }
+
+    public int getIdProduit() {
+        return id_produit;
+    }
+    
+      public String getAb() {
+        return ab;
+    }
+
+    public Review11(String email, String contenu, int id_produit) {
+        this.email = email;
+        this.contenu = contenu;
+        this.id_produit = id_produit;
+    }
+    
+
+    public void setAb(String ab) {
+        this.ab = ab;
+    }
+
+    public Review11(String email, String contenu, String ab,int id_produit) {
+        this.email = email;
+        this.contenu = contenu;
+        this.id_produit = id_produit;
+        this.ab = ab;
     }
 
     @Override
@@ -110,6 +159,18 @@ public class Review11 implements Serializable {
             return false;
         }
         return true;
+    }
+
+
+
+    public Review11(String email) {
+        this.email = email;
+    }
+
+
+    public Review11(String email, String contenu) {
+        this.email = email;
+        this.contenu = contenu;
     }
 
     @Override

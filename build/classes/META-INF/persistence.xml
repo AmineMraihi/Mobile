@@ -8,7 +8,6 @@
     <class>com.codename1.uikit.entities.Parking</class>
     <class>com.codename1.uikit.entities.Evenement</class>
     <class>com.codename1.uikit.entities.JardinEnfant</class>
-    <class>com.codename1.uikit.entities.Review11</class>
     <class>com.codename1.uikit.entities.PanierProduit</class>
     <class>com.codename1.uikit.entities.ScheduledCommand</class>
     <class>com.codename1.uikit.entities.DemandeEmploi</class>

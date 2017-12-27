@@ -57,7 +57,7 @@ public class Produit implements Serializable {
     private String type;
     @Basic(optional = false)
     @Column(name = "prix")
-    private double prix;
+    private Double prix;
     @Basic(optional = false)
     @Column(name = "quantite")
     private int quantite;
@@ -77,9 +77,14 @@ public class Produit implements Serializable {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-    @JoinColumn(name = "id_boutique", referencedColumnName = "id_boutique")
-    @ManyToOne
-    private Boutique idBoutique;
+    
+    
+     @Lob
+    @Column(name = "id_boutique")
+    private int id_boutique;
+    @Basic(optional = false)
+    
+   
     @OneToMany(mappedBy = "idProduit")
     private Collection<Promotion> promotionCollection;
 
@@ -90,7 +95,7 @@ public class Produit implements Serializable {
         this.idProduit = idProduit;
     }
 
-    public Produit(Integer idProduit, String nom, String type, double prix, int quantite, double prixAchatGros, String path, String description, Date updatedAt) {
+    public Produit(Integer idProduit, String nom, String type, Double prix, int quantite, double prixAchatGros, String path, String description, Date updatedAt) {
         this.idProduit = idProduit;
         this.nom = nom;
         this.type = type;
@@ -102,8 +107,28 @@ public class Produit implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public Produit(Integer idProduit, String nom, String type, Double prix, String description) {
+        this.idProduit = idProduit;
+        this.nom = nom;
+        this.type = type;
+        this.prix = prix;
+        this.description = description;
+    }
+
+    public Produit(String nom, Double prix) {
+        this.nom = nom;
+        this.prix = prix;
+    }
+    
+
     public Integer getIdProduit() {
         return idProduit;
+    }
+
+    public Produit(String nom, String type, Double prix) {
+        this.nom = nom;
+        this.type = type;
+        this.prix = prix;
     }
 
     public void setIdProduit(Integer idProduit) {
@@ -126,11 +151,11 @@ public class Produit implements Serializable {
         this.type = type;
     }
 
-    public double getPrix() {
+    public Double getPrix() {
         return prix;
     }
 
-    public void setPrix(double prix) {
+    public void setPrix(Double prix) {
         this.prix = prix;
     }
 
@@ -182,12 +207,12 @@ public class Produit implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Boutique getIdBoutique() {
-        return idBoutique;
+    public int getIdBoutique() {
+        return id_boutique;
     }
 
-    public void setIdBoutique(Boutique idBoutique) {
-        this.idBoutique = idBoutique;
+    public void setIdBoutique(int idBoutique) {
+        this.id_boutique = idBoutique;
     }
 
     public Collection<Promotion> getPromotionCollection() {
@@ -203,6 +228,27 @@ public class Produit implements Serializable {
         int hash = 0;
         hash += (idProduit != null ? idProduit.hashCode() : 0);
         return hash;
+    }
+
+    public Produit(String nom, String type, Double prix, String path) {
+        this.nom = nom;
+        this.type = type;
+        this.prix = prix;
+        this.path = path;
+    }
+
+    public Produit(String nom, String type) {
+        this.nom = nom;
+        this.type = type;
+    }
+
+    public Produit(Integer idProduit, String nom, String type, Double prix, String path, String description) {
+        this.idProduit = idProduit;
+        this.nom = nom;
+        this.type = type;
+        this.prix = prix;
+        this.path = path;
+        this.description = description;
     }
 
     @Override

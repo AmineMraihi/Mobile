@@ -209,7 +209,7 @@ ajoutD.add(nom).add(nomt).add(prenom).add(prenomt).add(adresse).add(adresset).ad
                 ConnectionRequest req = new ConnectionRequest();
  //      req.setUrl("http://localhost:8082/crud/ajouterDemande.php?id_user_fk=" +idu+ "$id_offre_fk=" +ido+ "$NomEmp=" + nomt.getText() + "&PrenomEmp=" + prenomt.getText() + "&adresse=" + adresset.getText()+ "&sexe=" + sexet.getText() + "&numTel=" + numt.getText() + "&email=" + emailt.getText() + "&qualification=" + qualift.getText() + "&exper="+ expt.getText() + "");
 
- req.setUrl("http://localhost:8082/crud/ajouterDemande.php?id_user_fk="+idu+"&id_offre_fk="+ido+"&NomEmp="+ nomt.getText()+"&PrenomEmp="+prenomt.getText()+"&adresse="+adresset.getText()+"&sexe="+sexet.getText()+"&numTel="+numt.getText()+"&email="+emailt.getText() + "&qualification=" + qualift.getText() +"");
+ req.setUrl("http://localhost/crud/ajouterDemande.php?id_user_fk="+idu+"&id_offre_fk="+ido+"&NomEmp="+ nomt.getText()+"&PrenomEmp="+prenomt.getText()+"&adresse="+adresset.getText()+"&sexe="+sexet.getText()+"&numTel="+numt.getText()+"&email="+emailt.getText() + "&qualification=" + qualift.getText() +"");
 
                 
                 
