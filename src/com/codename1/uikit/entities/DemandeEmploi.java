@@ -73,9 +73,9 @@ public class DemandeEmploi implements Serializable {
     private String qualification;
     @Column(name = "experience")
     private Integer experience;
-    @JoinColumn(name = "id_offre_fk", referencedColumnName = "id_offre")
-    @ManyToOne
-    private OffreEmploi idOffreFk;
+    @Basic(optional = false)
+    @Column(name = "id_offre_fk")
+    private int idOffreFk;
 
     public DemandeEmploi() {
     }
@@ -180,11 +180,11 @@ public class DemandeEmploi implements Serializable {
         this.experience = experience;
     }
 
-    public OffreEmploi getIdOffreFk() {
+    public int getIdOffreFk() {
         return idOffreFk;
     }
 
-    public void setIdOffreFk(OffreEmploi idOffreFk) {
+    public void setIdOffreFk(int idOffreFk) {
         this.idOffreFk = idOffreFk;
     }
 
@@ -210,7 +210,9 @@ public class DemandeEmploi implements Serializable {
 
     @Override
     public String toString() {
-        return "com.codename1.uikit.entities.DemandeEmploi[ idDemande=" + idDemande + " ]";
+        return "DemandeEmploi{" + "idDemande=" + idDemande + ", idUserFk=" + idUserFk + ", nomEmp=" + nomEmp + ", prenomEmp=" + prenomEmp + ", dateNaissance=" + dateNaissance + ", adresse=" + adresse + ", sexe=" + sexe + ", email=" + email + ", numTel=" + numTel + ", qualification=" + qualification + ", experience=" + experience + ", idOffreFk=" + idOffreFk + '}';
     }
+
+    
     
 }

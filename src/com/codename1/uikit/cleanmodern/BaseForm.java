@@ -48,7 +48,7 @@ public class BaseForm extends Form {
     
     
 
-    public BaseForm() {
+    public BaseForm()  {
     }
 
     public BaseForm(Layout contentPaneLayout) {
@@ -117,12 +117,13 @@ public class BaseForm extends Form {
                         //new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
                         new Label(finalDuke, "nothing_to_see_here"))
         ));
+        tb.addMaterialCommandToSideMenu("Liste des Produits", FontImage.MATERIAL_UPDATE, e -> new Produittry2(res).show());
+
 
         tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE,
                 e -> new NewsfeedForm(res).show());
 
-        tb.addMaterialCommandToSideMenu("Produit", FontImage.MATERIAL_UPDATE,
-                e -> new NewsfeedForm(res).show());
+      
 
         tb.addMaterialCommandToSideMenu("Boutique", FontImage.MATERIAL_UPDATE,
                 new ActionListener() {
@@ -133,6 +134,17 @@ public class BaseForm extends Form {
             }
         });
 
+         tb.addMaterialCommandToSideMenu("Statistique", FontImage.MATERIAL_UPDATE,
+                      new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                MyApplication my = new MyApplication();
+                my.start();
+            }
+        });
+
+        
+        
         tb.addMaterialCommandToSideMenu("Evenement", FontImage.MATERIAL_UPDATE,
                 new ActionListener() {
             @Override
@@ -142,8 +154,21 @@ public class BaseForm extends Form {
             }
         });
 
-        tb.addMaterialCommandToSideMenu("Offre d'emploi", FontImage.MATERIAL_UPDATE,
-                e -> new NewsfeedForm(res).show());
+         tb.addMaterialCommandToSideMenu("Offre d'emploi", FontImage.MATERIAL_UPDATE,
+              e -> new OffreEmploiPage(res).show());
+        
+        tb.addMaterialCommandToSideMenu("Mes demandes", FontImage.MATERIAL_UPDATE,
+               new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+              //  User u = SignInForm.staticUser;
+              //  id = u.getIdUser();
+              //  System.out.println(id);
+                MesDemandesPage mesdemande = new MesDemandesPage(res);
+                mesdemande.show();
+            }
+        });
+        
 
         tb.addMaterialCommandToSideMenu("Parking", FontImage.MATERIAL_UPDATE,
                 e -> new NewsfeedForm(res).show());

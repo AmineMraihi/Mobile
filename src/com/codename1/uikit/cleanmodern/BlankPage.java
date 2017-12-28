@@ -51,8 +51,8 @@ public class BlankPage extends BaseForm {
         getContentPane().setScrollVisible(false);
 
         super.addSideMenu(res);
-        tb.addSearchCommand(e -> {
-        });
+       /* tb.addSearchCommand(e -> {
+        });*/
 
         Tabs swipe = new Tabs();
 

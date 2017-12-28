@@ -5,8 +5,8 @@
     To learn more about Codename One go to https://www.codenameone.com/
     -->
         
-    <project name="Demo" default="default" basedir=".">
-    <description>Builds, tests, and runs the project Demo.</description>
+    <project name="CleanModernUIKit" default="default" basedir=".">
+    <description>Builds, tests, and runs the project CleanModernUIKit.</description>
     <import file="nbproject/build-impl.xml"/>
     <property file="codenameone_settings.properties"/>
     <property name="automated" value="false" />

@@ -1,12 +1,11 @@
 package com.codename1.uikit.entities;
 
-import com.codename1.uikit.entities.OffreEmploi;
 import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-26T00:27:29")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-12-28T15:07:15")
 @StaticMetamodel(DemandeEmploi.class)
 public class DemandeEmploi_ { 
 
@@ -15,7 +14,7 @@ public class DemandeEmploi_ {
     public static volatile SingularAttribute<DemandeEmploi, String> qualification;
     public static volatile SingularAttribute<DemandeEmploi, Date> dateNaissance;
     public static volatile SingularAttribute<DemandeEmploi, String> adresse;
-    public static volatile SingularAttribute<DemandeEmploi, OffreEmploi> idOffreFk;
+    public static volatile SingularAttribute<DemandeEmploi, Integer> idOffreFk;
     public static volatile SingularAttribute<DemandeEmploi, Integer> idDemande;
     public static volatile SingularAttribute<DemandeEmploi, String> sexe;
     public static volatile SingularAttribute<DemandeEmploi, Integer> experience;

@@ -50,6 +50,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.mindrot.BCrypt;
 
 /**
  * Sign in UI
@@ -118,65 +119,12 @@ public class SignInForm extends BaseForm {
         signIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-//                connectionRequest = new ConnectionRequest() {
-//
-//                    @Override
-//                    protected void readResponse(InputStream input) throws IOException {
-//
-//                        MD5 md5 = new MD5(password.getText());
-//                        String md5Password = md5.asHex();
-//
-//                        JSONParser json = new JSONParser();
-//                        Reader reader = new InputStreamReader(input, "UTF-8");
-//                        Map<String, Object> data = json.parseJSON(reader);
-//                        List<Map<String, Object>> content = (List<Map<String, Object>>) data.get("root");
-//
-//                        for (Map<String, Object> obj : content) {
-//                            u.add(new User(
-//                                    Integer.parseInt(obj.get("id_user").toString()),
-//                                    (String) obj.get("username"),
-//                                    (String) obj.get("password"),
-//                                    (String) obj.get("email"),
-//                                    (String) obj.get("nom"),
-//                                    (String) obj.get("prenom"),
-//                                    (String) obj.get("path")
-//                            ));
-//                        }
-//
-//                        for (User user : u) {
-//                            if (username.getText().equals(user.getUsername())
-//                                    && md5Password.equals(user.getPassword())) {
-//                                System.out.println("it works!");
-//                                staticUser = new User();
-//                                staticUser.setIdUser(user.getIdUser());
-//                                staticUser.setUsername(user.getUsername());
-//                                staticUser.setNom(user.getNom());
-//                                staticUser.setPrenom(user.getPrenom());
-//                                staticUser.setEmail(user.getEmail());
-//                                staticUser.setPassword(user.getPassword());
-//                                staticUser.setPath(user.getPath());
-//
-//                                test = true;
-//                                NewsfeedForm w = new NewsfeedForm(res);
-//                                w.show();
-//                            }
-//                        }
-//                        if (!test) {
-//                            System.out.println("wrong credentials ");
-//                        }
-//                    }
-//
-//                };
-//                connectionRequest.setUrl("http://localhost/crud/login.php");
-//                NetworkManager.getInstance().addToQueue(connectionRequest);
+
 
                 UserService service = new UserService();
                 if (service.verification(username.getText(), password.getText())) {
                     NewsfeedForm w = new NewsfeedForm(res);
                     w.show();
-                } else {
-                    ToastBar.showMessage("wrong credentials ", FontImage.MATERIAL_COMPARE_ARROWS, 2000);
-
                 }
 
             }
@@ -246,7 +194,7 @@ public class SignInForm extends BaseForm {
 
                     // token expiration is in seconds from the current time, we convert it to a System.currentTimeMillis value so we can
                     // reference it in the future to check expiration
-                    Preferences.set(tokenPrefix + "tokenExpires", tokenExpirationInMillis(lg.getAccessToken()));
+                 /////   Preferences.set(tokenPrefix + "tokenExpires", tokenExpirationInMillis(lg.getAccessToken()));
                     // showContactsForm(data);
                     System.out.println("done3");
                     System.out.println(fullName);

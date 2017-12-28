@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.mindrot.BCrypt;
 
 /**
  *
@@ -44,7 +45,7 @@ public class UserService {
                 + "&name=" + nom
                 + "&prenom=" + prenom
                 + "&password=" + password
-                + "&mail=" + mail
+                + "&email=" + mail
                 + "&imagename=" + imagename
                 + "&imagepath=" + imagepath
         );
@@ -177,7 +178,7 @@ public class UserService {
 
             for (User user : u) {
                 if (username.equals(user.getUsername())
-                        && md5Password.equals(user.getPassword())) {
+                        && BCrypt.checkpw(password, user.getPassword())) {
 
                     System.out.println("it works!");
                     staticUser = new User();
@@ -276,7 +277,7 @@ public class UserService {
     }
 
     public User getUserViaFacebookid(String facebook_id) {
-        
+
         List<Map<String, Object>> all = new ArrayList<>();
         ConnectionRequest request = new ConnectionRequest("http://localhost/crud/selectUserViaFacebookid.php?"
                 + "facebook_id=" + facebook_id);
