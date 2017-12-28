@@ -62,7 +62,7 @@ public class AllReviewsForm extends BaseForm {
         Tabs swipe = new Tabs();
 
         Label spacer2 = new Label();
-        addTab(swipe, res.getImage("Screenshot_11.png"), spacer2, "", "", "Review of our product ");
+        addTab(swipe, res.getImage("dog.jpg"), spacer2, "", "", "Review of our product ");
                 
         swipe.setUIID("merzoug");
         swipe.getContentPane().setUIID("merzoug");

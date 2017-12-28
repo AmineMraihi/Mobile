@@ -142,7 +142,7 @@ public class NewsfeedForm extends BaseForm {
         });
         NetworkManager.getInstance().addToQueue(con);  
         
-         addTab(swipe, res.getImage("Screenshot_10.png"), spacer1, " ", "", "Welcome in Tunisia Mall");
+         addTab(swipe, res.getImage("dog.jpg"), spacer1, " ", "", "Welcome in Tunisia Mall");
 ////     addTab(swipe, res.getImage("Logo.png"), spacer1, " ", "", "");
     //// addTab(swipe, res.getImage("tun1.png"), spacer2, "", "", "");
      ////   addButton(img, title, focusScrolling, LEFT, CENTER);

@@ -70,7 +70,7 @@ public class Produittry2  extends BaseForm{
         Tabs swipe = new Tabs();
 
         Label spacer2 = new Label();
-        addTab(swipe, res.getImage("Screenshot_11.png"), spacer2, "", "", "Welcome in Tunisia Mall ");
+        addTab(swipe, res.getImage("dog.jpg"), spacer2, "", "", "Welcome in Tunisia Mall ");
                 
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
