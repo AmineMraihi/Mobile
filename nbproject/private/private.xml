@@ -1,41 +1,13 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Amine/Documents/NetBeansProjects/Demo/src/com/codename1/uikit/cleanmodern/SignUpForm.java</file>
-            <file>file:/C:/Users/Amine/Documents/NetBeansProjects/Demo/src/com/codename1/tunisiamall/service/UserService.java</file>
-            <file>file:/C:/Users/Amine/Documents/NetBeansProjects/Demo/src/com/codename1/uikit/cleanmodern/SignInForm.java</file>
+            <file>file:/E:/4infoB1/PiDev/Sprint%20Mobile/validation/Mobile/src/com/codename1/tunisiamall/service/ReclamationService.java</file>
+            <file>file:/E:/4infoB1/PiDev/Sprint%20Mobile/validation/Mobile/src/com/codename1/uikit/entities/Reclamation.java</file>
+            <file>file:/E:/4infoB1/PiDev/Sprint%20Mobile/validation/Mobile/src/com/codename1/tunisiamall/service/UserService.java</file>
+            <file>file:/E:/4infoB1/PiDev/Sprint%20Mobile/validation/Mobile/src/com/codename1/uikit/cleanmodern/ReclamatioForm.java</file>
+            <file>file:/E:/4infoB1/PiDev/Sprint%20Mobile/validation/Mobile/src/com/codename1/uikit/cleanmodern/BaseForm.java</file>
         </group>
     </open-files>
 </project-private>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/tunisiamall/service/ProduitService.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/DemandePage.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/ActivateForm.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/Produittry2.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/tunisiamall/service/Review2Service.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/NewsfeedForm.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/DescriptionForm.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/ModifierDemande.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/EventPage.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/BaseForm.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/entities/DemandeEmploi.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/DemandePageParPoste.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/entities/Publicite.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/SignInForm.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/MesDemandesPage.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/OffreEmploiPage.java</file>
-            <file>file:/C:/Users/ahmed/Desktop/Mobile/src/com/codename1/uikit/cleanmodern/OffreEmploiParPoste.java</file>
-        </group>
-    </open-files>
-</project-private>
->>>>>>> master

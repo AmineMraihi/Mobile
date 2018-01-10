@@ -39,6 +39,9 @@ import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import java.io.IOException;
 
+
+
+
 /**
  * Base class for the forms with common functionality
  *
@@ -177,7 +180,15 @@ public class BaseForm extends Form {
                 e -> new NewsfeedForm(res).show());
 
         tb.addMaterialCommandToSideMenu("Reclamation", FontImage.MATERIAL_UPDATE,
-                e -> new NewsfeedForm(res).show());
+                e -> {
+            
+            try {
+                new ReclamatioForm(res).show();
+            } catch (IOException ex) {
+               
+            }
+            
+        });
 
         tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS,
                 e -> new ProfileForm(res).show());

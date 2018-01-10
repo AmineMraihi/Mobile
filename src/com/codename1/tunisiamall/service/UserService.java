@@ -29,7 +29,7 @@ public class UserService {
 
     private ConnectionRequest connectionRequest;
     boolean test = false;
-
+ User u;
     public void adduser(String username, String nom, String prenom, String password,
             String mail, String imagename, String imagepath) {
         connectionRequest = new ConnectionRequest() {
@@ -65,6 +65,32 @@ public class UserService {
 //
 //        }
 //    }
+    public User getUserByBoutique(int id_boutique) {
+        List<Map<String, Object>> all = new ArrayList<>();
+        ConnectionRequest request = new ConnectionRequest("http://localhost/crud/finduserbyboutique.php?id_boutique="+id_boutique);
+        NetworkManager.getInstance().addToQueueAndWait(request);
+        Map<String, Object> result = null;
+
+        try {
+            result = new JSONParser().parseJSON(new InputStreamReader(new ByteArrayInputStream(request.getResponseData()), "UTF-8"));
+            List<Map<String, Object>> response = (List<Map<String, Object>>) result.get("root");
+
+            for (Map<String, Object> obj : response) {
+               // System.out.println("test");
+                         u=new User(
+                                Integer.parseInt( obj.get("id_user").toString())
+                              
+                        );
+            }
+
+        } catch (IOException ex) {
+            System.out.println("EXCEPTION : " + ex);
+
+        }
+        System.out.println(u);
+        return u;
+
+    }
     public void updateuser(int id_user, String username, String nom, String prenom,
             String password, String mail, String imagename, String imagepath) {
 

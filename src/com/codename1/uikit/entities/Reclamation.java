@@ -54,6 +54,11 @@ public class Reclamation implements Serializable {
     public Reclamation() {
     }
 
+    public Reclamation(String type, String text) {
+        this.type = type;
+        this.text = text;
+    }
+
     public Reclamation(Integer idReclamation) {
         this.idReclamation = idReclamation;
     }
