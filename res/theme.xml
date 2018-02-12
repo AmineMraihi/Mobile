@@ -361,6 +361,8 @@
         <val key="WhiteSeparator.padding" value="1.0,1.0,1.0,1.0" />
         <val key="WhiteSeparator.transparency" value="26" />
         <val key="aminerecherche.bgColor" value="f0f0f0" />
+        <val key="jassem.bgImage" value="welcome-background.jpg" />
+        <val key="jassem.bgType" value="1" />
         <val key="transparency" value="0" />
     </theme>
     <image name="timeline-background.jpg"  />
